@@ -10,13 +10,16 @@ function App() {
   useEffect(() => {
     fetch(`${API_BASE_URL}/pokemon?limit=10000&offset=0`)
       .then(r => r.json())
-      .then(data => setPokemon(data.results)) // Correctly handle the data structure
+      .then(data => {
+        const names = data.results.map(mon => mon.name); // Extract only the names
+        setPokemon(names); // Store the names in the state
+      })      
       .catch(err => console.error("Error fetching Pokemon data:", err)); // Handle errors
   }, []);
 
   const [pokemon, setPokemon] = useState([]);
 
-  pokemon.map((mon)=>{console.log(mon.name)});
+  console.log(pokemon);
   
   return (
     <div className="App">
