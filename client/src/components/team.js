@@ -1,8 +1,14 @@
 import React from 'react'
 
-const team = () => {
+import Pokecard from './pokecard.js';
+
+const team = ({pokemon}) => {
   return (
-    <div>team</div>
+    <div>
+        {pokemon.slice(0, 6).map((name, index) => (
+        <Pokecard key={index} name={name} />
+        ))}
+    </div>
   )
 }
 
