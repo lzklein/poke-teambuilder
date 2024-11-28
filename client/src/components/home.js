@@ -1,8 +1,12 @@
 import React from 'react'
 
-const home = () => {
+import Team from './team.js';
+
+const home = ({pokemon}) => {
   return (
-    <div>home</div>
+    <div>
+        <Team pokemon={pokemon}/>
+    </div>
   )
 }
 

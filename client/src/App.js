@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 
 // import components
 import Home from './components/home.js';
-import Team from './components/team.js';
 
 const API_BASE_URL = 'https://pokeapi.co/api/v2/';
 
@@ -24,8 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <Home/>
-      <Team/>
+      <Home pokemon={pokemon}/>
     </div>
   );
 }
