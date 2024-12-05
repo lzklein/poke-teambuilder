@@ -12,12 +12,16 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
+//! sample chart update later
+// TODO dynamic stats from team
 const RadarChart = () => {
-  const data = {
-    labels: ['HP', 'ATK', 'DEF', 'SPATK', 'SPDEF', 'SPD'], 
+  const data1 = {
+    
+    labels: ['HP', 'ATK', 'DEF', 'SPD', 'SPDEF', 'SPATK'], 
     datasets: [
       {
-        data: [80, 90, 70, 85, 75, 100], // Data points
+        label: 'total',
+        data: [80, 90, 70, 85, 75, 100], 
         backgroundColor: 'rgba(54, 162, 235, 0.2)', // Transparent fill
         borderColor: 'rgba(54, 162, 235, 1)', // Border color
         borderWidth: 2,
@@ -26,7 +30,21 @@ const RadarChart = () => {
     ],
   };
 
-  // Optional customization
+  const data2 = {
+    
+    labels: ['HP', 'ATK', 'DEF', 'SPD', 'SPDEF', 'SPATK'], 
+    datasets: [
+      {
+        label: 'average',
+        data: [120, 90, 70, 20, 75, 150],
+        backgroundColor: 'rgba(54, 162, 235, 0.2)', 
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 2,
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+      },
+    ],
+  };
+
   const options = {
     scales: {
       r: {
@@ -42,7 +60,18 @@ const RadarChart = () => {
     },
   };
 
-  return <Radar data={data} options={options} />;
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <div>
+        <h3>Stat Total</h3>
+        <Radar data={data1} options={options} />
+      </div>
+      <div>
+        <h3>Average</h3>
+        <Radar data={data2} options={options} />
+      </div>
+    </div>
+  );
 };
 
 export default RadarChart;
