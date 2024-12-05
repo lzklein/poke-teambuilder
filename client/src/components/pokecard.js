@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Missingno from '../assets/missingno.png';
 
 const Pokecard = ({ pokemon, url }) => {
@@ -22,21 +22,30 @@ const Pokecard = ({ pokemon, url }) => {
     setSelectedMon(e.target.value);
   };
 
-  console.log(pokeData);
-
   return (
-    <div>
-      <select defaultValue="" onChange={handleSelect}>
-        <option value={selectedMon} disabled>
-          Select a Pokémon
-        </option>
-        {pokemon.map((mon) => (
-          <option key={mon.id} value={mon.name}>
-            {mon}
+    <div className='pokecardContainer'>
+      <div className='selectContainer'>
+        <select
+          defaultValue=""
+          onChange={handleSelect}
+          className='selectDropdown'
+        >
+          <option value="" disabled>
+            Select a Pokémon
           </option>
-        ))}
-      </select>
-      <img src={pokeData?pokeData.sprites.front_default:Missingno} style={{maxWidth:'96px', maxHeight:'96px'}}/>
+          {pokemon.map((mon) => (
+            <option key={mon} value={mon}>
+              {mon}
+            </option>
+          ))}
+        </select>
+        <span className='selectArrow'>▼</span>
+      </div>
+      <img
+        src={pokeData ? pokeData.sprites.front_default : Missingno}
+        alt={Missingno}
+        className='pokemonImage'
+      />
     </div>
   );
 };
