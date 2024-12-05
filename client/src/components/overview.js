@@ -7,6 +7,8 @@ import Weakness from './weakness';
 const overview = () => {
   return (
     <div>
+      <Coverage/>
+      <Weakness/>
       <Stats/>
     </div>
   )
