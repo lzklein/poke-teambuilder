@@ -1,10 +1,12 @@
 import React from 'react'
 
-import Radar from './radar';
+import RadarChart from './radarchart.js';
 
 const stats = () => {
   return (
-    <div>stats</div>
+    <div style={{maxWidth:'300px'}}>
+      <RadarChart/>
+    </div>
   )
 }
 
