@@ -4,7 +4,8 @@ import Missingno from '../assets/missingno.png';
 const Pokecard = ({ pokemon, url }) => {
   const [selectedMon, setSelectedMon] = useState('');
   const [pokeData, setPokeData] = useState(null);
-
+  const [shiny, setShiny] = useState(false);
+  
   useEffect(() => {
     if (!selectedMon) return;
     fetch(`${url}/pokemon/${selectedMon}`)
@@ -21,6 +22,12 @@ const Pokecard = ({ pokemon, url }) => {
   const handleSelect = (e) => {
     setSelectedMon(e.target.value);
   };
+
+  const handleShiny = () => {
+    setShiny(!shiny);
+  }
+
+  console.log(pokeData);
 
   return (
     <div className='pokecardContainer'>
@@ -42,9 +49,10 @@ const Pokecard = ({ pokemon, url }) => {
         <span className='selectArrow'>▼</span>
       </div>
       <img
-        src={pokeData ? pokeData.sprites.front_default : Missingno}
+        src={pokeData ? shiny ? pokeData.sprites.front_shiny: pokeData.sprites.front_default : Missingno}
         alt={Missingno}
         className='pokemonImage'
+        onClick={handleShiny}
       />
     </div>
   );
