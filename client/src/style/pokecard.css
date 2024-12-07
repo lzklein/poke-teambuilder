@@ -1,16 +1,20 @@
 .pokecardContainer {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    max-width: 300px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
+    gap: 20px;
   }
   
-  .selectContainer {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
+
+  .detailsContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    align-items: start;
   }
   
   .selectDropdown {
@@ -59,23 +63,21 @@
     border-color: #3498db;
   }
   
-/* Container for grouped move dropdowns */
-.moveDropdownContainer {
+  .moveBox {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .moveDropdownContainer {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    background-color: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 10px;
-    width: 150px; /* Adjust width as needed */
+    gap: 10px;
   }
   
   .moveDropdownTitle {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
-    margin-bottom: 8px;
   }
   
   /* Individual move dropdown */
@@ -83,6 +85,7 @@
     position: relative;
     width: 100%;
     margin-bottom: 8px;
+    
   }
   
   /* Style the move select dropdown */
@@ -92,28 +95,15 @@
   }
   
   .moveSelect {
-    width: 100%;
-    padding: 4px 6px;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 3px;
-    font-size: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    appearance: none;  /* Remove default select arrow */
-    -webkit-appearance: none; /* Safari */
-    -moz-appearance: none; /* Firefox */
+    width: 100%; /* Full width for moves */
+    appearance: none; /* Hides the default arrow */
   }
   
-  /* Custom arrow styling */
   .moveArrow {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 10px;
+    margin-left: -20px;
     pointer-events: none;
   }
+  
   
   /* Custom hover effect */
   .moveSelect:hover {
@@ -121,6 +111,5 @@
   }
   
   .moveDropdown:last-child {
-    margin-bottom: 0;
+    margin-bottom: 20px;
   }
-  
