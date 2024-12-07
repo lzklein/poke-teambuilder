@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <Home pokemon={pokemon}/>
+      <Home pokemon={pokemon} url={API_BASE_URL}/>
     </div>
   );
 }
