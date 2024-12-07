@@ -11,7 +11,7 @@ function App() {
     fetch(`${API_BASE_URL}/pokemon?limit=10000&offset=0`)
       .then(r => r.json())
       .then(data => {
-        const names = data.results.map(mon => mon.name); // Extract only the names
+        const names = data.results.map(mon => mon.name.charAt(0).toUpperCase() + mon.name.slice(1)); // Extract only the names
         setPokemon(names); // Store the names in the state
       })      
       .catch(err => console.error("Error fetching Pokemon data:", err)); // Handle errors
