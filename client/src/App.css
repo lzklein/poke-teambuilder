@@ -1,4 +1,7 @@
 @import './style/typing.css';
+@import './style/pokecard.css';
+@import './style/layout.css';
+@import './style/team.css';
 
 .App {
   text-align: center;
