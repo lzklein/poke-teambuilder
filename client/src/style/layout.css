@@ -23,13 +23,19 @@
     padding: 20px;
   }
   
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
   .right-column {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
   
-  .columns > *, .right-column > * {
+  .columns > *, .left-column > *, .right-column > * {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
