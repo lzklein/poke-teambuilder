@@ -1,0 +1,61 @@
+.pokecardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .selectContainer {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .selectDropdown {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+  }
+  
+  .selectDropdown:hover {
+    background-color: #e6f2ff;
+    border-color: #3498db;
+  }
+  
+  .selectDropdown:focus {
+    outline: none;
+    box-shadow: 0 0 5px #3498db;
+  }
+  
+  .selectArrow {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    pointer-events: none;
+  }
+  
+  .pokemonImage {
+    width: 96px;
+    height: 96px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    object-fit: contain;
+    transition: border-color 0.3s ease;
+  }
+  
+  .pokemonImage:hover {
+    border-color: #3498db;
+  }
+  
