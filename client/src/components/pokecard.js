@@ -10,7 +10,7 @@ const Pokecard = ({ pokemon, url }) => {
 
   useEffect(() => {
     if (!selectedMon) return;
-    fetch(`${url}/pokemon/${selectedMon}`)
+    fetch(`${url}pokemon/${selectedMon.toLowerCase()}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch Pokémon data');
@@ -49,6 +49,91 @@ const Pokecard = ({ pokemon, url }) => {
 
   console.log(pokeData);
 
+if(!pokeData){
+  return(
+    <div className="pokecardContainer">
+      {/* Pokémon Selector Dropdown */}
+      <div className="selectContainer">
+        <select
+          defaultValue=""
+          onChange={handleSelect}
+          className="selectDropdown"
+        >
+          <option value="" disabled>
+            Select a Pokémon
+          </option>
+          {pokemon.map((mon) => (
+            <option key={mon} value={mon}>
+              {mon}
+            </option>
+          ))}
+        </select>
+        <span className="selectArrow">▼</span>
+      </div>
+
+      {/* Main Box: Pokémon Details */}
+      <div className="detailsContainer">
+        {/* Left Column */}
+        <div className="left-column">
+          <img
+            src={
+              pokeData
+                ? shiny
+                  ? pokeData.sprites.front_shiny
+                  : pokeData.sprites.front_default
+                : Missingno
+            }
+            alt="Pokémon"
+            className="pokemonImage"
+            onClick={handleShiny}
+          />
+
+          {/* Ability Dropdown */}
+            <div className="moveDropdownContainer">
+              <p className="moveDropdownTitle">Ability:</p>
+              <div className="moveDropdown">
+                <select
+                  value={selectedAbility}
+                  onChange={(e) => handleAbility(e.target.value)}
+                  className="moveSelect"
+                  style={{ width: '96px' }}
+                >
+                  <option value="" disabled>
+                    Abilities
+                  </option>
+                </select>
+                <span className="moveArrow">▼</span>
+              </div>
+            </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="right-column">
+          <div className="moveBox">
+              <div className="moveDropdownContainer">
+                <p className="moveDropdownTitle">Moves:</p>
+                {selectedMoves.map((selectedMove, index) => (
+                  <div key={index} className="moveDropdown">
+                    <select
+                      value={selectedMove}
+                      onChange={(e) => handleMoveChange(index, e.target.value)}
+                      className="moveSelect"
+                    >
+                      <option value="" disabled>
+                        Move {index + 1}
+                      </option>
+                    </select>
+                    <span className="moveArrow">▼</span>
+                  </div>
+                ))}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
   return (
     <div className="pokecardContainer">
       {/* Pokémon Selector Dropdown */}
@@ -70,8 +155,9 @@ const Pokecard = ({ pokemon, url }) => {
         <span className="selectArrow">▼</span>
       </div>
 
-      {/* Pokémon Image and Ability (Left Column) */}
-      <div className="columns">
+      {/* Main Box: Pokémon Details */}
+      <div className="detailsContainer">
+        {/* Left Column */}
         <div className="left-column">
           <img
             src={
@@ -86,15 +172,16 @@ const Pokecard = ({ pokemon, url }) => {
             onClick={handleShiny}
           />
 
-          {/* Ability Dropdown with same class names as Moves */}
+          {/* Ability Dropdown */}
           {pokeData?.abilities && (
             <div className="moveDropdownContainer">
-              <h4 className="moveDropdownTitle">Ability:</h4>
+              <p className="moveDropdownTitle">Ability:</p>
               <div className="moveDropdown">
                 <select
                   value={selectedAbility}
                   onChange={(e) => handleAbility(e.target.value)}
                   className="moveSelect"
+                  style={{ width: '96px' }}
                 >
                   <option value="" disabled>
                     Abilities
@@ -114,41 +201,44 @@ const Pokecard = ({ pokemon, url }) => {
           )}
         </div>
 
-        {/* Moves (Right Column) */}
+        {/* Right Column */}
         <div className="right-column">
-          {pokeData?.moves && (
-            <div className="moveDropdownContainer">
-              <h4 className="moveDropdownTitle">Moves:</h4>
-              {selectedMoves.map((selectedMove, index) => (
-                <div key={index} className="moveDropdown">
-                  <select
-                    value={selectedMove}
-                    onChange={(e) => handleMoveChange(index, e.target.value)}
-                    className="moveSelect"
-                  >
-                    <option value="" disabled>
-                      Move {index + 1}
-                    </option>
-                    {pokeData.moves.map((moveObj) => {
-                      const moveName = moveObj.move.name;
-                      return (
-                        <option
-                          key={moveName}
-                          value={moveName}
-                          disabled={
-                            isMoveDisabled(moveName) && selectedMove !== moveName
-                          }
-                        >
-                          {moveName}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <span className="moveArrow">▼</span>
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="moveBox">
+            {pokeData?.moves && (
+              <div className="moveDropdownContainer">
+                <p className="moveDropdownTitle">Moves:</p>
+                {selectedMoves.map((selectedMove, index) => (
+                  <div key={index} className="moveDropdown">
+                    <select
+                      value={selectedMove}
+                      onChange={(e) => handleMoveChange(index, e.target.value)}
+                      className="moveSelect"
+                    >
+                      <option value="" disabled>
+                        Move {index + 1}
+                      </option>
+                      {pokeData.moves.map((moveObj) => {
+                        const moveName = moveObj.move.name;
+                        return (
+                          <option
+                            key={moveName}
+                            value={moveName}
+                            disabled={
+                              isMoveDisabled(moveName) &&
+                              selectedMove !== moveName
+                            }
+                          >
+                            {moveName}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    <span className="moveArrow">▼</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
