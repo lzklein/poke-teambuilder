@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Missingno from '../assets/missingno.png';
 
+// todo MAYBE multicolor 50-50 for duo type pokemon (big stretch might be ugly)
 const Pokecard = ({ pokemon, url }) => {
   const [selectedMon, setSelectedMon] = useState('');
   const [pokeData, setPokeData] = useState(null);
   const [shiny, setShiny] = useState(false);
   const [selectedMoves, setSelectedMoves] = useState(['', '', '', '']);
   const [selectedAbility, setSelectedAbility] = useState('');
+  const [pokemonType, setPokemonType] = useState('');
 
   useEffect(() => {
     if (!selectedMon) return;
@@ -21,6 +23,7 @@ const Pokecard = ({ pokemon, url }) => {
         setPokeData(data);
         setShiny(false);
         setSelectedMoves(['', '', '', '']);
+        setPokemonType(data.types[0]?.type?.name);
       })
       .catch((error) => console.error('Error fetching Pokémon data:', error));
   }, [selectedMon, url]);
@@ -47,12 +50,18 @@ const Pokecard = ({ pokemon, url }) => {
     return selectedMoves.includes(moveName);
   };
 
+  const typeClassName = pokemonType
+    ? pokemonType.toLowerCase() // Convert to lowercase to match the class name
+    : 'normal';
+
+
   console.log(pokeData);
+  console.log(pokeData?.types[0].type.name);
+
 
 if(!pokeData){
   return(
     <div className="pokecardContainer">
-      {/* Pokémon Selector Dropdown */}
       <div className="selectContainer">
         <select
           defaultValue=""
@@ -90,7 +99,6 @@ if(!pokeData){
 
           {/* Ability Dropdown */}
             <div className="moveDropdownContainer">
-              <p className="moveDropdownTitle">Ability:</p>
               <div className="moveDropdown">
                 <select
                   value={selectedAbility}
@@ -111,7 +119,6 @@ if(!pokeData){
         <div className="right-column">
           <div className="moveBox">
               <div className="moveDropdownContainer">
-                <p className="moveDropdownTitle">Moves:</p>
                 {selectedMoves.map((selectedMove, index) => (
                   <div key={index} className="moveDropdown">
                     <select
@@ -135,13 +142,13 @@ if(!pokeData){
 }
 
   return (
-    <div className="pokecardContainer">
+    <div className={`pokecardContainer ${typeClassName}`}>
       {/* Pokémon Selector Dropdown */}
       <div className="selectContainer">
         <select
           defaultValue=""
           onChange={handleSelect}
-          className="selectDropdown"
+          className={`selectDropdown ${typeClassName}`}
         >
           <option value="" disabled>
             Select a Pokémon
@@ -175,7 +182,6 @@ if(!pokeData){
           {/* Ability Dropdown */}
           {pokeData?.abilities && (
             <div className="moveDropdownContainer">
-              <p className="moveDropdownTitle">Ability:</p>
               <div className="moveDropdown">
                 <select
                   value={selectedAbility}
@@ -206,7 +212,6 @@ if(!pokeData){
           <div className="moveBox">
             {pokeData?.moves && (
               <div className="moveDropdownContainer">
-                <p className="moveDropdownTitle">Moves:</p>
                 {selectedMoves.map((selectedMove, index) => (
                   <div key={index} className="moveDropdown">
                     <select
@@ -244,5 +249,4 @@ if(!pokeData){
     </div>
   );
 };
-
 export default Pokecard;
