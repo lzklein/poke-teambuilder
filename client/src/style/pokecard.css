@@ -3,12 +3,68 @@
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px;
   }
   
+  .pokecardContainer.normal {
+    background-color: rgba(168, 167, 122, 0.65); /* #A8A77A */
+  }
+  .pokecardContainer.fire {
+    background-color: rgba(238, 129, 48, 0.65); /* #EE8130 */
+  }
+  .pokecardContainer.water {
+    background-color: rgba(99, 144, 240, 0.65); /* #6390F0 */
+  }
+  .pokecardContainer.electric {
+    background-color: rgba(247, 208, 44, 0.65); /* #F7D02C */
+  }
+  .pokecardContainer.grass {
+    background-color: rgba(122, 199, 76, 0.65); /* #7AC74C */
+  }
+  .pokecardContainer.ice {
+    background-color: rgba(150, 217, 214, 0.65); /* #96D9D6 */
+  }
+  .pokecardContainer.fighting {
+    background-color: rgba(194, 46, 40, 0.65); /* #C22E28 */
+  }
+  .pokecardContainer.poison {
+    background-color: rgba(163, 62, 161, 0.65); /* #A33EA1 */
+  }
+  .pokecardContainer.ground {
+    background-color: rgba(226, 191, 101, 0.65); /* #E2BF65 */
+  }
+  .pokecardContainer.flying {
+    background-color: rgba(169, 143, 243, 0.65); /* #A98FF3 */
+  }
+  .pokecardContainer.psychic {
+    background-color: rgba(249, 85, 135, 0.65); /* #F95587 */
+  }
+  .pokecardContainer.bug {
+    background-color: rgba(166, 185, 26, 0.65); /* #A6B91A */
+  }
+  .pokecardContainer.rock {
+    background-color: rgba(182, 161, 54, 0.65); /* #B6A136 */
+  }
+  .pokecardContainer.ghost {
+    background-color: rgba(115, 87, 151, 0.65); /* #735797 */
+  }
+  .pokecardContainer.dragon {
+    background-color: rgba(111, 53, 252, 0.65); /* #6F35FC */
+  }
+  .pokecardContainer.dark {
+    background-color: rgba(112, 87, 70, 0.65); /* #705746 */
+  }
+  .pokecardContainer.steel {
+    background-color: rgba(183, 183, 206, 0.65); /* #B7B7CE */
+  }
+  .pokecardContainer.fairy {
+    background-color: rgba(214, 133, 173, 0.65); /* #D685AD */
+  }
+  
+
 
   .detailsContainer {
     display: grid;
@@ -31,8 +87,8 @@
   }
   
   .selectDropdown:hover {
-    background-color: #e6f2ff;
-    border-color: #3498db;
+    background-color:  rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 1);
   }
   
   .selectDropdown:focus {
@@ -59,10 +115,6 @@
     transition: border-color 0.3s ease;
   }
   
-  .pokemonImage:hover {
-    border-color: #3498db;
-  }
-  
   .moveBox {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -72,12 +124,13 @@
   .moveDropdownContainer {
     display: flex;
     flex-direction: column;
-    gap: 10px;
   }
   
   .moveDropdownTitle {
     font-size: 14px;
     font-weight: bold;
+    margin-top:5px;
+    margin-bottom:5px;
   }
   
   /* Individual move dropdown */
@@ -97,6 +150,7 @@
   .moveSelect {
     width: 100%; /* Full width for moves */
     appearance: none; /* Hides the default arrow */
+    margin-top:10px
   }
   
   .moveArrow {
@@ -111,5 +165,5 @@
   }
   
   .moveDropdown:last-child {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
