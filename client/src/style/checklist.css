@@ -1,0 +1,13 @@
+.checklist-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    gap: 10px; 
+    padding: 20px;
+  }
+  
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+  }
+  
