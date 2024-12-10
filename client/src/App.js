@@ -19,7 +19,6 @@ function App() {
 
   const [pokemon, setPokemon] = useState([]);
 
-  console.log(pokemon);
 
   return (
     <div className="App">
