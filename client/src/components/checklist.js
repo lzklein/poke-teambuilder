@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Checklist = () => {
-  const labels = ["Hazards", "Phazer", "Pivot", "Cleric", "Status", "Trapper", "Spinner", "Recovery"];
+const Checklist = ({ teamData }) => {
+  const labels = [
+    "Hazards", "Phazer", "Pivot", "Cleric", "Status", "Trapper", "Spinner", "Recovery"
+  ];
 
   const hazards = ['sticky-web', 'stealth-rock', 'spikes', 'toxic-spikes', 'stone-axe', 'ceaseless-edge', 'toxic-debris'];
   const phazers = ['dragon-tail', 'whirlwind', 'roar', 'circle-throw', 'haze', 'clear-smog'];
@@ -15,26 +17,68 @@ const Checklist = () => {
     'dark-void', 'inferno', 'static', 'flame-body', 'poison-point', 'effect-spore'
   ];
   const trapper = ['anchor-shot', 'block', 'fairy-lock', 'jaw-lock', 'octolock', 'mean-look', 'spider-web', 'spirit-shackle',
-     'pursuit','thousand-waves', 'arena-trap', 'magnet-pull', 'shadow-tag'];
+    'pursuit','thousand-waves', 'arena-trap', 'magnet-pull', 'shadow-tag', 'whirlpool', 'fire-spin', 'sand-tomb', 'clamp',
+   'wrap',];
   const spinner = ['mortal_spin', 'court-change', 'tidy-up', 'rapid-spin', 'defog'];
   const recovery = ['aqua-ring','floral-healing','heal-pulse', 'healing-wish', 'ingrain', 'jungle-healing', 'leech-seed',
     'life-dew', 'lunar-dance', 'pain-split', 'pollen-puff', 'present', 'revival-blessing', 'wish', 'regenerator', 'milk-drink',
     'moonlight', 'morning-sun', 'slack-off'
   ];
 
+  const [checkedState, setCheckedState] = useState({
+    Hazards: false,
+    Phazer: false,
+    Pivot: false,
+    Cleric: false,
+    Status: false,
+    Trapper: false,
+    Spinner: false,
+    Recovery: false
+  });
+
+  // Checking teamData to checkbox
+  useEffect(() => {
+    const flattenedTeamData = [].concat(...teamData);
+    
+    setCheckedState({
+      Hazards: flattenedTeamData.some(item => hazards.includes(item)),
+      Phazer: flattenedTeamData.some(item => phazers.includes(item)),
+      Pivot: flattenedTeamData.some(item => pivot.includes(item)),
+      Cleric: flattenedTeamData.some(item => cleric.includes(item)),
+      Status: flattenedTeamData.some(item => status.includes(item)),
+      Trapper: flattenedTeamData.some(item => trapper.includes(item)),
+      Spinner: flattenedTeamData.some(item => spinner.includes(item)),
+      Recovery: flattenedTeamData.some(item => recovery.includes(item))
+    });
+  }, [teamData]);
+
   return (
     <div>
-      <h4>Teambuilding Checklist</h4>
+      <h4 className='checkboxLabel'>Teambuilding Checklist</h4>
       <div className="checklist-container">
         {labels.map((label, index) => (
-          <div key={index} className="checklist-item">
-            <input type="checkbox" id={label} name={label} disabled/>
-            <label htmlFor={label}>{label}</label>
+          <div key={index} className="checkbox-wrapper-45">
+            <input 
+              id={`cbx-${index}`} 
+              type="checkbox" 
+              checked={checkedState[label]} 
+              disabled
+            />
+            <label className="cbx" htmlFor={`cbx-${index}`}>
+              <div className="flip">
+                <div className="front"></div>
+                <div className="back">
+                  <svg width="16" height="14" viewBox="0 0 16 14">
+                    <path d="M2 8.5L6 12.5L14 1.5"></path>
+                  </svg>
+                </div>
+              </div>
+            </label>
+            <label htmlFor={`cbx-${index}`} style={{ marginLeft: '8px' }} className='checkboxLabel'>{label}</label>
           </div>
         ))}
-      </div>  
+      </div>
     </div>
-
   );
 };
 
