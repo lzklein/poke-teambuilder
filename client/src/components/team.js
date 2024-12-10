@@ -2,14 +2,14 @@ import React from 'react'
 
 import Pokecard from './pokecard.js';
 
-const team = ({pokemon, url}) => {
+const Team = ({pokemon, url, setTeamData}) => {
   return (
     <div className="team-container">
-        {pokemon.slice(0, 6).map((index) => (
-        <Pokecard key={index} pokemon={pokemon} url={url}/>
+        {pokemon.slice(0, 6).map((mon, index) => (
+        <Pokecard key={index} pokemon={pokemon} url={url} setTeamData={setTeamData} ind={index}/>
         ))}
     </div>
   )
 }
 
-export default team
+export default Team
