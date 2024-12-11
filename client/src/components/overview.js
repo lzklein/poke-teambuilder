@@ -24,7 +24,7 @@ const Overview = ({teamStats, types}) => {
       <div className={`pages ${currentPage === 0 ? 'show-first' : 'show-second'}`}>
         <div className="page">
           <Coverage/>
-          <Weakness types={types}/>
+          <Weakness typesCounts={types}/>
         </div>
         <div className="page">
           <Stats teamStats={teamStats}/>

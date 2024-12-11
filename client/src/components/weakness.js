@@ -1,6 +1,6 @@
 import React from 'react'
 
-const weakness = ({types}) => {
+const Weakness = ({typesCounts}) => {
   const types = [
     "normal", "fire", "water", "electric", "grass", "ice", 
     "fighting", "poison", "ground", "flying", "psychic", "bug", 
@@ -49,4 +49,4 @@ const weakness = ({types}) => {
   );
 };
 
-export default weakness
+export default Weakness
