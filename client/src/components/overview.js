@@ -3,7 +3,7 @@ import Stats from './stats';
 import Coverage from './coverage';
 import Weakness from './weakness';
 
-const Overview = ({teamStats}) => {
+const Overview = ({teamStats, types}) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleNextPage = () => {
@@ -23,8 +23,8 @@ const Overview = ({teamStats}) => {
       )}
       <div className={`pages ${currentPage === 0 ? 'show-first' : 'show-second'}`}>
         <div className="page">
-          <Coverage />
-          <Weakness />
+          <Coverage types={types}/>
+          <Weakness types={types}/>
         </div>
         <div className="page">
           <Stats teamStats={teamStats}/>

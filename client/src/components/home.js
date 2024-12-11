@@ -38,7 +38,7 @@ const Home = ({pokemon, url}) => {
         <Team pokemon={pokemon} url={url} setTeamData={setTeamData} setTeamStats={setTeamStats} setTypeCounts={setTypeCounts}/>
         <div className="right-column">
           <Checklist teamData={teamData}/>
-          <Overview teamStats={teamStats}/>
+          <Overview teamStats={teamStats} types={typeCounts}/>
         </div>
       </div>
       <Footer />  
