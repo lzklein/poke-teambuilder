@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Missingno from '../assets/missingno.png';
 
-const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats }) => {
+const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts }) => {
   const [selectedMon, setSelectedMon] = useState('');
   const [pokeData, setPokeData] = useState(null);
   const [shiny, setShiny] = useState(false);
@@ -42,9 +42,11 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats }) => {
     setTeamStats(prevData => {
       const dataCopy = [...prevData];
       dataCopy[ind] = pokeData.stats.map(stat => stat.base_stat);
-      console.log(dataCopy[ind]);
       return dataCopy;
     });
+
+    updateTypeCounts(pokeData.types.map(mon => mon.type.name));
+
   }, [pokeData]);
 
   const handleSelect = (e) => {
@@ -69,8 +71,22 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats }) => {
     return selectedMoves.includes(moveName);
   };
 
+  const updateTypeCounts = (pokemonTypes, increment = true) => {
+    setTypeCounts((prevCounts) => {
+      const newCounts = { ...prevCounts };
+      for (const type of pokemonTypes) {
+        newCounts[type] = increment
+          ? (newCounts[type] || 0) + 1
+          : Math.max(0, (newCounts[type] || 0) - 1);
+      }
+      return newCounts;
+    });
+  };
+  
+
   const typeClassName = pokemonType ? pokemonType.toLowerCase() : 'normal';
 
+  console.log(pokeData)
   if(!pokeData){
     return(
       <div className="pokecardContainer">
