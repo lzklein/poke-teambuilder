@@ -1,4 +1,53 @@
+.coverage-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .coverage-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 3px;
+    width: 100%; /* Adjust the width of the grid container */
+    max-width: 960px; /* Optional: Limit the width for better alignment */
+  }
+  
+  .coverage-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .type-box {
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    min-width: 80px; 
+    min-height: 30px; 
+    max-width: 150px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .coverage-count {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+  }
 
+.chartLabel {
+    margin: 8px 0 0 0;
+}
+  
+  
 .normal {
     background-color: #A8A77A;
 }
