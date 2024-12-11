@@ -10,8 +10,6 @@ const Home = ({pokemon, url}) => {
   const [teamData, setTeamData] = useState([[],[],[],[],[],[]]);
   const [teamStats, setTeamStats] = useState([[],[],[],[],[],[]]);
 
-  console.log(teamStats)
-  console.log(teamData)
   return (
     <div className="layout">
       <Header />
