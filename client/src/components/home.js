@@ -8,16 +8,18 @@ import Footer from './footer';
 
 const Home = ({pokemon, url}) => {
   const [teamData, setTeamData] = useState([[],[],[],[],[],[]]);
+  const [teamStats, setTeamStats] = useState([[],[],[],[],[],[]]);
 
+  console.log(teamStats)
   console.log(teamData)
   return (
     <div className="layout">
       <Header />
       <div className="columns">
-        <Team pokemon={pokemon} url={url} setTeamData={setTeamData}/>
+        <Team pokemon={pokemon} url={url} setTeamData={setTeamData} setTeamStats={setTeamStats}/>
         <div className="right-column">
           <Checklist teamData={teamData}/>
-          <Overview />
+          <Overview teamStats={teamStats}/>
         </div>
       </div>
       <Footer />  
