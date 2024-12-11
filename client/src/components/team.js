@@ -3,6 +3,7 @@ import React from 'react'
 import Pokecard from './pokecard.js';
 
 const Team = ({pokemon, url, setTeamData, setTeamStats, setTypeCounts}) => {
+  
   return (
     <div className="team-container">
         {pokemon.slice(0, 6).map((mon, index) => (
