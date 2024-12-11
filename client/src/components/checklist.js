@@ -53,7 +53,7 @@ const Checklist = ({ teamData }) => {
   }, [teamData]);
 
   return (
-    <div>
+    <div style={{marginTop:'20px'}}>
       <h4 className='checkboxLabel'>Teambuilding Checklist</h4>
       <div className="checklist-container">
         {labels.map((label, index) => (
