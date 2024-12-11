@@ -3,7 +3,7 @@ import Stats from './stats';
 import Coverage from './coverage';
 import Weakness from './weakness';
 
-const Overview = () => {
+const Overview = ({teamStats}) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleNextPage = () => {
@@ -27,7 +27,7 @@ const Overview = () => {
           <Weakness />
         </div>
         <div className="page">
-          <Stats />
+          <Stats teamStats={teamStats}/>
         </div>
       </div>
       {currentPage === 0 && (
