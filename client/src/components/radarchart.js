@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Radar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -12,16 +12,53 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-//! sample chart update later
 // TODO dynamic stats from team
-const RadarChart = () => {
+const RadarChart = ({teamStats}) => {
+  useEffect(()=>{
+    setStatAverage(getAverage(teamStats));
+    setStatTotal(getTotal(teamStats))
+  },[teamStats])
+
+  const [statAverage, setStatAverage] = useState([]);
+  const [statTotal, setStatTotal] = useState([]);
+
+  const getAverage = (stats) => {
+    const numStats = stats.length;
+    const numIndices = stats[0]?.length || 0;
+  
+    const averages = Array(numIndices).fill(0);
+  
+    stats.forEach(statArray => {
+      statArray.forEach((value, index) => {
+        averages[index] += value;
+      });
+    });
+  
+    return averages.map(sum => sum / numStats);
+  };
+  
+  const getTotal = (stats) => {
+    const numIndices = stats[0]?.length || 0;
+  
+    const totals = Array(numIndices).fill(0); 
+
+    stats.forEach(statArray => {
+      statArray.forEach((value, index) => {
+        totals[index] += value;
+      });
+    });
+  
+    return totals;
+  };
+  
+
   const data1 = {
     
     labels: ['HP', 'ATK', 'DEF', 'SPD', 'SPDEF', 'SPATK'], 
     datasets: [
       {
         label: 'total',
-        data: [80, 90, 70, 85, 75, 100], 
+        data: statTotal, 
         backgroundColor: 'rgba(54, 162, 235, 0.2)', // Transparent fill
         borderColor: 'rgba(54, 162, 235, 1)', // Border color
         borderWidth: 2,
@@ -36,7 +73,7 @@ const RadarChart = () => {
     datasets: [
       {
         label: 'average',
-        data: [120, 90, 70, 20, 75, 150],
+        data: statAverage,
         backgroundColor: 'rgba(54, 162, 235, 0.2)', 
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
