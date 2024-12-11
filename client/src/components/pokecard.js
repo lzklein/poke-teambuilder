@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Missingno from '../assets/missingno.png';
 
-const Pokecard = ({ pokemon, url, setTeamData, ind }) => {
+const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats }) => {
   const [selectedMon, setSelectedMon] = useState('');
   const [pokeData, setPokeData] = useState(null);
   const [shiny, setShiny] = useState(false);
@@ -36,6 +36,16 @@ const Pokecard = ({ pokemon, url, setTeamData, ind }) => {
     });
   }, [selectedAbility, selectedMoves]);
   
+  useEffect(() => {
+    if (!pokeData) return;
+  
+    setTeamStats(prevData => {
+      const dataCopy = [...prevData];
+      dataCopy[ind] = pokeData.stats.map(stat => stat.base_stat);
+      console.log(dataCopy[ind]);
+      return dataCopy;
+    });
+  }, [pokeData]);
 
   const handleSelect = (e) => {
     setSelectedMon(e.target.value);
