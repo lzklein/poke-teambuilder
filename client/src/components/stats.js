@@ -5,7 +5,7 @@ import RadarChart from './radarchart.js';
 const stats = ({teamStats}) => {
   return (
     <div style={{maxWidth:'300px'}}>
-      <RadarChart/>
+      <RadarChart teamStats={teamStats}/>
     </div>
   )
 }
