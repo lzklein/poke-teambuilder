@@ -71,14 +71,17 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
     return selectedMoves.includes(moveName);
   };
 
-  const updateTypeCounts = (pokemonTypes, increment = true) => {
+  const updateTypeCounts = () => {
     setTypeCounts((prevCounts) => {
       const newCounts = { ...prevCounts };
-      for (const type of pokemonTypes) {
-        newCounts[type] = increment
-          ? (newCounts[type] || 0) + 1
-          : Math.max(0, (newCounts[type] || 0) - 1);
+  
+      // dual type check
+      if (pokeData.types.length === 2) {
+        newCounts[ind] = `${pokeData.types[0].type.name} ${pokeData.types[1].type.name}`;
+      } else {
+        newCounts[ind] = pokeData.types[0].type.name;
       }
+  
       return newCounts;
     });
   };
@@ -86,7 +89,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
 
   const typeClassName = pokemonType ? pokemonType.toLowerCase() : 'normal';
 
-  console.log(pokeData)
+  // console.log(pokeData)
   if(!pokeData){
     return(
       <div className="pokecardContainer">
@@ -105,7 +108,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
               </option>
             ))}
           </select>
-          <span className="selectArrow">▼</span>
+          {/* <span className="selectArrow">▼</span> */}
         </div>
   
         {/* Main Box: Pokémon Details */}
@@ -138,7 +141,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
                       Abilities
                     </option>
                   </select>
-                  <span className="moveArrow">▼</span>
+                  {/* <span className="moveArrow">▼</span> */}
                 </div>
               </div>
           </div>
@@ -158,7 +161,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
                           Move {index + 1}
                         </option>
                       </select>
-                      <span className="moveArrow">▼</span>
+                      {/* <span className="moveArrow">▼</span> */}
                     </div>
                   ))}
                 </div>
@@ -187,7 +190,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
             </option>
           ))}
         </select>
-        <span className="selectArrow">▼</span>
+        {/* <span className="selectArrow">▼</span> */}
       </div>
 
       {/* Main Box: Pokémon Details */}
@@ -229,7 +232,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
                     );
                   })}
                 </select>
-                <span className="moveArrow">▼</span>
+                {/* <span className="moveArrow">▼</span> */}
               </div>
             </div>
           )}
@@ -266,7 +269,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
                         );
                       })}
                     </select>
-                    <span className="moveArrow">▼</span>
+                    {/* <span className="moveArrow">▼</span> */}
                   </div>
                 ))}
               </div>
