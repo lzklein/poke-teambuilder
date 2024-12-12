@@ -23,26 +23,28 @@ const RadarChart = ({teamStats}) => {
   const [statTotal, setStatTotal] = useState([]);
 
   const getAverage = (stats) => {
-    const numStats = stats.length;
-    const numIndices = stats[0]?.length || 0;
+    const validStats = stats.filter((statArray) => statArray.length > 0);
+    const numStats = validStats.length;
+    const numIndices = validStats[0]?.length || 0;
   
     const averages = Array(numIndices).fill(0);
   
-    stats.forEach(statArray => {
+    validStats.forEach((statArray) => {
       statArray.forEach((value, index) => {
         averages[index] += value;
       });
     });
   
-    return averages.map(sum => sum / numStats);
+    return numStats > 0 ? averages.map((sum) => sum / numStats) : averages;
   };
   
   const getTotal = (stats) => {
-    const numIndices = stats[0]?.length || 0;
+    const validStats = stats.filter((statArray) => statArray.length > 0);
+    const numIndices = validStats[0]?.length || 0;
   
-    const totals = Array(numIndices).fill(0); 
-
-    stats.forEach(statArray => {
+    const totals = Array(numIndices).fill(0);
+  
+    validStats.forEach((statArray) => {
       statArray.forEach((value, index) => {
         totals[index] += value;
       });
