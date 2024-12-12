@@ -3,11 +3,14 @@
     grid-template-columns: repeat(4, 1fr); /* 4 columns */
     gap: 10px; 
     padding: 0 10px 10px 10px;
+    justify-items: start; 
   }
   
   .checklist-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-self: flex-start; 
     gap: 5px; 
   }
   
