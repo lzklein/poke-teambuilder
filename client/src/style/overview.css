@@ -1,26 +1,26 @@
 .overview-container {
-    width: 50vw; 
+    max-width: 43vw; 
     height: 100vh; 
     max-height: 500px;
     overflow: hidden; 
     position: relative; 
-    margin-top:20px;
+    margin-top: 20px;
   }
   
   .pages {
     display: flex; /* Arrange children horizontally */
-    width: 200%; /* 100% per page times 2 pages */
+    width: 100%; /* Match the parent width (40vw now) */
     height: 100%; /* Match the parent height */
     transition: transform 0.5s ease; /* Smooth sliding animation */
   }
   
   .pages > div {
-    flex: 0 0 50vw; /* Each child is 100% of the viewport width */
+    flex: 0 0 100%; /* Each child should take up 100% of the new width (40vw) */
     height: 100%; /* Match parent height */
   }
   
   .page {
-    width: 100%;
+    width: 100%; /* Ensure each page fills the container */
     flex-shrink: 0;
     display: flex;
     justify-content: center;
@@ -34,17 +34,16 @@
   }
   
   .show-second {
-    transform: translateX(-60%); /* Slide fully to the second page */
+    transform: translateX(-120%); /* Adjust to show second page fully */
   }
-  
   
   .arrow-button {
     position: absolute;
     top: 0;
     width: 50px; /* Fixed width for arrows */
     height: 100%; /* Full vertical height */
-    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent background */
-    color: white;
+    background-color: rgba(0, 0, 0, 0); /* Semi-transparent background */
+    color: #c0c0c0; /* Initial color */
     border: none;
     cursor: pointer;
     display: flex;
@@ -52,11 +51,12 @@
     align-items: center;
     font-size: 24px;
     z-index: 10;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease; /* Add color transition */
   }
   
   .arrow-button:hover {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3); /* Darken background on hover */
+    color: white; /* Change arrow color to white on hover */
   }
   
   .arrow-button.left {
