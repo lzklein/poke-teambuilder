@@ -22,7 +22,7 @@ const Checklist = ({ teamData }) => {
   const spinner = ['mortal_spin', 'court-change', 'tidy-up', 'rapid-spin', 'defog'];
   const recovery = ['aqua-ring','floral-healing','heal-pulse', 'healing-wish', 'ingrain', 'jungle-healing', 'leech-seed',
     'life-dew', 'lunar-dance', 'pain-split', 'pollen-puff', 'present', 'revival-blessing', 'wish', 'regenerator', 'milk-drink',
-    'moonlight', 'morning-sun', 'slack-off'
+    'moonlight', 'morning-sun', 'slack-off', 'recover'
   ];
 
   const [checkedState, setCheckedState] = useState({
