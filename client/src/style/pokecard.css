@@ -124,6 +124,7 @@
   .moveDropdownContainer {
     display: flex;
     flex-direction: column;
+    min-width:80px;
   }
   
   .moveDropdownTitle {
@@ -133,12 +134,49 @@
     margin-bottom:5px;
   }
   
-  /* Individual move dropdown */
   .moveDropdown {
     position: relative;
+    display: inline-block;
     width: 100%;
-    margin-bottom: 8px;
-    
+    margin-bottom: 3px;
+  }
+  
+  .moveDropdown select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 3px 24px 3px 8px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.2;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 40%, #ffffff 70%);
+}
+  
+  .moveDropdown::after {
+    content: '\25BC';
+    position: absolute;
+    top: 65%;
+    right: 8px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 10px;
+    color: #333;
+  }
+  
+  .moveDropdown select:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: #cccccc;
+  }
+  
+  .moveDropdown select:focus {
+    outline: none;
+    box-shadow: 0 0 3px #3498db;
   }
   
   /* Style the move select dropdown */
