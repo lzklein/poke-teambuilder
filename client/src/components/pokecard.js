@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Missingno from '../assets/missingno.png';
 
-const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts }) => {
+const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts, setMoveTypes }) => {
   const [selectedMon, setSelectedMon] = useState('');
   const [pokeData, setPokeData] = useState(null);
   const [shiny, setShiny] = useState(false);
@@ -34,20 +34,35 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
       dataCopy[ind] = [selectedAbility, ...selectedMoves];
       return dataCopy;
     });
-  }, [selectedAbility, selectedMoves]);
+  }, [selectedAbility, selectedMoves, ind, setTeamData]);
   
   useEffect(() => {
     if (!pokeData) return;
   
+    const updateTypeCounts = () => {
+      setTypeCounts((prevCounts) => {
+        const newCounts = { ...prevCounts };
+    
+        // dual type check
+        if (pokeData.types.length === 2) {
+          newCounts[ind] = `${pokeData.types[0].type.name} ${pokeData.types[1].type.name}`;
+        } else {
+          newCounts[ind] = pokeData.types[0].type.name;
+        }
+    
+        return newCounts;
+      });
+    };
+    
     setTeamStats(prevData => {
       const dataCopy = [...prevData];
       dataCopy[ind] = pokeData.stats.map(stat => stat.base_stat);
       return dataCopy;
     });
-
+  
     updateTypeCounts(pokeData.types.map(mon => mon.type.name));
-
-  }, [pokeData]);
+  
+  }, [pokeData, ind, setTeamStats, setTypeCounts]); 
 
   const handleSelect = (e) => {
     setSelectedMon(e.target.value);
@@ -61,35 +76,59 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
     setShiny(!shiny);
   };
 
-  const handleMoveChange = (index, value) => {
+  const handleMoveChange = (index, newMove) => {
+    const previousMove = selectedMoves[index]; 
+    if (previousMove) {
+      updateMoveTypes(previousMove, "remove"); 
+    }
+  
     const updatedMoves = [...selectedMoves];
-    updatedMoves[index] = value;
+    updatedMoves[index] = newMove;
     setSelectedMoves(updatedMoves);
+  
+    if (newMove) {
+      updateMoveTypes(newMove, "add"); 
+    }
   };
+  
 
   const isMoveDisabled = (moveName) => {
     return selectedMoves.includes(moveName);
   };
 
-  const updateTypeCounts = () => {
-    setTypeCounts((prevCounts) => {
-      const newCounts = { ...prevCounts };
+  const updateMoveTypes = async (moveName, action) => {
+    if (!moveName) return;
   
-      // dual type check
-      if (pokeData.types.length === 2) {
-        newCounts[ind] = `${pokeData.types[0].type.name} ${pokeData.types[1].type.name}`;
-      } else {
-        newCounts[ind] = pokeData.types[0].type.name;
+    try {
+      const response = await fetch(`${url}move/${moveName.toLowerCase()}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch move data");
       }
-  
-      return newCounts;
-    });
+      const data = await response.json();
+      const moveType = data.type.name;
+      const moveCategory = data.damage_class.name; 
+
+    // return for status moves, only want typing of attacks
+    if (moveCategory === "status") {
+      return;
+    }
+      setMoveTypes((prevMoveTypes) => {
+        const updatedTypes = { ...prevMoveTypes };
+        if (action === "add") {
+          updatedTypes[moveType] = (updatedTypes[moveType] || 0) + 1;
+        } else if (action === "remove") {
+          updatedTypes[moveType] = Math.max(0, updatedTypes[moveType] - 1);
+        }
+        return updatedTypes;
+      });
+    } catch (error) {
+      console.error("Error fetching move data:", error);
+    }
   };
   
 
   const typeClassName = pokemonType ? pokemonType.toLowerCase() : 'normal';
 
-  // console.log(pokeData)
   if(!pokeData){
     return(
       <div className="pokecardContainer">
@@ -259,10 +298,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts 
                           <option
                             key={moveName}
                             value={moveName}
-                            disabled={
-                              isMoveDisabled(moveName) &&
-                              selectedMove !== moveName
-                            }
+                            disabled={isMoveDisabled(moveName) && selectedMove !== moveName}
                           >
                             {moveName}
                           </option>
