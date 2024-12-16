@@ -2,35 +2,45 @@ import React, { useState } from 'react';
 import Stats from './stats';
 import Coverage from './coverage';
 import Weakness from './weakness';
+import Suggestor from './suggestor';
 
-const Overview = ({teamStats, typeCounts, moveTypes}) => {
+const Overview = ({ teamStats, typeCounts, moveTypes }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleNextPage = () => {
-    setCurrentPage(1); // Navigate to the second page
+    if (currentPage < 2) {
+      setCurrentPage(currentPage + 1); // Navigate to the next page
+    }
   };
 
   const handlePrevPage = () => {
-    setCurrentPage(0); // Navigate back to the first page
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1); // Navigate back to the previous page
+    }
   };
 
   return (
     <div className="overview-container">
-      {currentPage === 1 && (
+      {currentPage > 0 && (
         <button className="arrow-button left" onClick={handlePrevPage}>
           ←
         </button>
       )}
-      <div className={`pages ${currentPage === 0 ? 'show-first' : 'show-second'}`}>
+
+      <div className={`pages ${currentPage === 0 ? 'show-first' : currentPage === 1 ? 'show-second' : 'show-third'}`}>
         <div className="page">
-          <Coverage moveTypes={moveTypes}/>
-          <Weakness typeCounts={typeCounts}/>
+          <Coverage moveTypes={moveTypes} />
+          <Weakness typeCounts={typeCounts} />
         </div>
         <div className="page">
-          <Stats teamStats={teamStats}/>
+          <Stats teamStats={teamStats} />
+        </div>
+        <div className="page">
+          <Suggestor />
         </div>
       </div>
-      {currentPage === 0 && (
+
+      {currentPage < 2 && (
         <button className="arrow-button right" onClick={handleNextPage}>
           →
         </button>
