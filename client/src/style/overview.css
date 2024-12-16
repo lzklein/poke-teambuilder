@@ -34,7 +34,11 @@
   }
   
   .show-second {
-    transform: translateX(-120%); /* Adjust to show second page fully */
+    transform: translateX(-100%); 
+  }
+
+  .show-third {
+    transform: translateX(-200%); 
   }
   
   .arrow-button {
