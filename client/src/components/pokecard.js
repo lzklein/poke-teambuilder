@@ -6,6 +6,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
   const [pokeData, setPokeData] = useState(null);
   const [shiny, setShiny] = useState(false);
   const [selectedMoves, setSelectedMoves] = useState(['', '', '', '']);
+  const [selectedMoveTypes, setSelectedMoveTypes] = useState(['','','','']);
   const [selectedAbility, setSelectedAbility] = useState('');
   const [pokemonType, setPokemonType] = useState('');
 
@@ -23,6 +24,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
         setPokeData(data);
         setShiny(false);
         setSelectedMoves(['', '', '', '']);
+        setSelectedMoveTypes(['', '', '', '']);
         setPokemonType(data.types[0]?.type?.name);
       })
       .catch((error) => console.error('Error fetching Pokémon data:', error));
@@ -76,21 +78,44 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
     setShiny(!shiny);
   };
 
-  const handleMoveChange = (index, newMove) => {
-    const previousMove = selectedMoves[index]; 
+  const handleMoveChange = async (index, newMove) => {
+    const previousMove = selectedMoves[index];
     if (previousMove) {
-      updateMoveTypes(previousMove, "remove"); 
+      // Remove the previous move's type from moveTypes
+      updateMoveTypes(previousMove, "remove");
+    }
+  
+    try {
+      const response = await fetch(`${url}move/${newMove.toLowerCase()}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch move data");
+      }
+      const data = await response.json();
+      const moveType = data.type.name;
+      const moveCategory = data.damage_class.name;
+  
+      // Handle status moves (ignore their types)
+      if (moveCategory === "status") {
+        const updatedTypes = [...selectedMoveTypes];
+        updatedTypes[index] = '';
+        setSelectedMoveTypes(updatedTypes);
+      } else {
+        const updatedTypes = [...selectedMoveTypes];
+        updatedTypes[index] = moveType;
+        setSelectedMoveTypes(updatedTypes);
+  
+        // Add the new move's type to moveTypes (only if it's not already present)
+        updateMoveTypes(newMove, "add");
+      }
+    } catch (error) {
+      console.error("Error fetching move data:", error);
     }
   
     const updatedMoves = [...selectedMoves];
     updatedMoves[index] = newMove;
     setSelectedMoves(updatedMoves);
-  
-    if (newMove) {
-      updateMoveTypes(newMove, "add"); 
-    }
   };
-  
+
   const formatMoveName = (moveName) => {
     const exceptionMoves = ["u-turn", "double-edge", "will-o-wisp", "x-scissor", "v-create", "soft-boiled"];
     
@@ -126,14 +151,22 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
       }
       const data = await response.json();
       const moveType = data.type.name;
-      const moveCategory = data.damage_class.name; 
-
-    // return for status moves, only want typing of attacks
-    if (moveCategory === "status") {
-      return;
-    }
+      const moveCategory = data.damage_class.name;
+  
+      // Ignore status moves as we only care about attacking moves' types
+      if (moveCategory === "status") {
+        return;
+      }
+  
+      // Prevent adding duplicate move types
       setMoveTypes((prevMoveTypes) => {
         const updatedTypes = { ...prevMoveTypes };
+  
+        // Check if the type is already in selectedMoveTypes
+        if (selectedMoveTypes.includes(moveType)) {
+          return prevMoveTypes; // Return the previous state without updating
+        }
+  
         if (action === "add") {
           updatedTypes[moveType] = (updatedTypes[moveType] || 0) + 1;
         } else if (action === "remove") {
@@ -141,6 +174,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
         }
         return updatedTypes;
       });
+  
     } catch (error) {
       console.error("Error fetching move data:", error);
     }
@@ -167,7 +201,6 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
               </option>
             ))}
           </select>
-          {/* <span className="selectArrow">▼</span> */}
         </div>
   
         {/* Main Box: Pokémon Details */}
@@ -195,6 +228,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
                     onChange={(e) => handleAbility(e.target.value)}
                     className="moveSelect"
                     style={{ width: '96px' }}
+                    disabled
                   >
                     <option value="" disabled>
                       Abilities
@@ -215,6 +249,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
                         value={selectedMove}
                         onChange={(e) => handleMoveChange(index, e.target.value)}
                         className="moveSelect"
+                        disabled
                       >
                         <option value="" disabled>
                           Move {index + 1}
