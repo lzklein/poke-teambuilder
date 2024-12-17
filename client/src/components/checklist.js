@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-const Checklist = ({ teamData }) => {
+const Checklist = ({ teamData, setCheckedState, checkedState }) => {
   const labels = [
     "Hazards", "Phazer", "Pivot", "Cleric", "Status", "Trapper", "Spinner", "Recovery"
   ];
 
-  const [checkedState, setCheckedState] = useState({
-    Hazards: false,
-    Phazer: false,
-    Pivot: false,
-    Cleric: false,
-    Status: false,
-    Trapper: false,
-    Spinner: false,
-    Recovery: false
-  });
 
   // Checking teamData to checkbox
   useEffect(() => {
@@ -50,7 +40,7 @@ const Checklist = ({ teamData }) => {
       Spinner: flattenedTeamData.some(item => spinner.includes(item)),
       Recovery: flattenedTeamData.some(item => recovery.includes(item))
     });
-  }, [teamData]);
+  }, [teamData, setCheckedState]);
   
 
   return (
