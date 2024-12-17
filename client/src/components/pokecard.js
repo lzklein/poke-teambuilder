@@ -91,6 +91,26 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
     }
   };
   
+  const formatMoveName = (moveName) => {
+    const exceptionMoves = ["u-turn", "double-edge", "will-o-wisp", "x-scissor", "v-create", "soft-boiled"];
+    
+    // only move using both hyphen and space
+    if (moveName === "wake-up-slap") return "Wake-Up Slap";
+
+    // actual hypen names
+    if (exceptionMoves.includes(moveName)) {
+      return moveName
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('-');
+    }
+
+    // replace - with space for normal move names
+    return moveName
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
 
   const isMoveDisabled = (moveName) => {
     return selectedMoves.includes(moveName);
@@ -300,7 +320,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
                             value={moveName}
                             disabled={isMoveDisabled(moveName) && selectedMove !== moveName}
                           >
-                            {moveName}
+                            {formatMoveName(moveName)}
                           </option>
                         );
                       })}
