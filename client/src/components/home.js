@@ -30,8 +30,16 @@ const Home = ({pokemon, url}) => {
     steel: 0,
     fairy: 0,
   })
-
-  console.log(moveTypes)
+  const [checkedState, setCheckedState] = useState({
+    Hazards: false,
+    Phazer: false,
+    Pivot: false,
+    Cleric: false,
+    Status: false,
+    Trapper: false,
+    Spinner: false,
+    Recovery: false
+  });
   
   return (
     <div className="layout">
@@ -45,8 +53,12 @@ const Home = ({pokemon, url}) => {
         setMoveTypes={setMoveTypes}
         />
         <div className="right-column">
-          <Checklist teamData={teamData}/>
-          <Overview teamStats={teamStats} typeCounts={typeCounts} moveTypes={moveTypes}/>
+          <Checklist teamData={teamData} setCheckedState={setCheckedState} checkedState={checkedState}/>
+          <Overview teamStats={teamStats} 
+          teamData={teamData} 
+          typeCounts={typeCounts} 
+          moveTypes={moveTypes} 
+          pokemon={pokemon}/>
         </div>
       </div>
       <Footer />  
