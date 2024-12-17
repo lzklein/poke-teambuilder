@@ -4,6 +4,7 @@
 @import './style/team.css';
 @import './style/checklist.css';
 @import './style/overview.css';
+@import './style/loader.css';
 
 .App {
   text-align: center;
