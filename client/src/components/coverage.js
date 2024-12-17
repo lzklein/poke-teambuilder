@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-const Coverage = ({ moveTypes }) => {
-  const types = [
-    "normal", "fire", "water", "electric", "grass", "ice", 
-    "fighting", "poison", "ground", "flying", "psychic", "bug", 
-    "rock", "ghost", "dragon", "dark", "steel", "fairy"
-  ];
+const types = [
+  "normal", "fire", "water", "electric", "grass", "ice", 
+  "fighting", "poison", "ground", "flying", "psychic", "bug", 
+  "rock", "ghost", "dragon", "dark", "steel", "fairy"
+];
 
-  // State to store coverage counts for each type
+const Coverage = ({ moveTypes }) => {
+
   const [coverageCounts, setCoverageCounts] = useState(
     types.reduce((acc, type) => {
       acc[type] = 0;
@@ -36,20 +36,25 @@ const Coverage = ({ moveTypes }) => {
       steel: { rock: 2, ice: 2, fairy: 2, fire: 0.5, water: 0.5, electric: 0.5, steel: 0.5 },
       fairy: { fighting: 2, dragon: 2, dark: 2, fire: 0.5, poison: 0.5, steel: 0.5 },
     };
-    const updatedCoverageCounts = { ...coverageCounts };
-
+  
+    const newCoverageCounts = types.reduce((acc, type) => {
+      acc[type] = 0; // Reset count
+      return acc;
+    }, {});
+  
     Object.keys(moveTypes).forEach((moveType) => {
       if (moveTypes[moveType] > 0) {
         Object.entries(typeEffectiveness[moveType] || {}).forEach(([targetType, multiplier]) => {
           if (multiplier === 2) {
-            updatedCoverageCounts[targetType] += moveTypes[moveType];
+            newCoverageCounts[targetType] += moveTypes[moveType];
           }
         });
       }
     });
-
-    setCoverageCounts(updatedCoverageCounts);
-  }, [moveTypes, coverageCounts]); // Update coverageCounts when moveTypes change
+  
+    setCoverageCounts(newCoverageCounts);
+  }, [moveTypes]);
+  
 
   return (
     <div>
