@@ -5,6 +5,7 @@
 @import './style/checklist.css';
 @import './style/overview.css';
 @import './style/loader.css';
+@import './style/suggestorcard.css';
 
 .App {
   text-align: center;
