@@ -4,7 +4,7 @@ import Coverage from './coverage';
 import Weakness from './weakness';
 import Suggestor from './suggestor';
 
-const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon }) => {
+const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const handleNextPage = () => {
@@ -36,7 +36,7 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon }) => {
           <Stats teamStats={teamStats} />
         </div>
         <div className="page">
-          <Suggestor typeCounts={typeCounts} teamData={teamData} moveTypes={moveTypes} pokemon={pokemon}/>
+          <Suggestor typeCounts={typeCounts} teamData={teamData} moveTypes={moveTypes} pokemon={pokemon} url={url}/>
         </div>
       </div>
 
