@@ -58,7 +58,8 @@ const Home = ({pokemon, url}) => {
           teamData={teamData} 
           typeCounts={typeCounts} 
           moveTypes={moveTypes} 
-          pokemon={pokemon}/>
+          pokemon={pokemon}
+          url={url}/>
         </div>
       </div>
       <Footer />  
