@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SuggestorCard from './suggestorcard';
 
 const hazards = ['sticky-web', 'stealth-rock', 'spikes', 'toxic-spikes', 'stone-axe', 'ceaseless-edge', 'toxic-debris'];
 const phazers = ['dragon-tail', 'whirlwind', 'roar', 'circle-throw', 'haze', 'clear-smog'];
@@ -25,13 +26,14 @@ const fetchPokemonDetails = async (pokemonName) => {
     moves,
     types,
     baseStatTotal: stats,
+    imageUrl: data.sprites.front_default, // Adding image URL
   };
 };
 
-const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon }) => {
+const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [randomPokemon, setRandomPokemon] = useState(null);
+  const [displayCards, setDisplayCards] = useState([{},{},{}]); // 3 empty Pokémon objects for the SuggestorCard
 
   const countFulfilledRoles = (moves) => {
     let fulfilledRoles = 0;
@@ -62,10 +64,17 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon }) => {
   const handleRandomClick = () => {
     if (!pokemon || pokemon.length === 0) return;
 
-    const randomIndex = Math.floor(Math.random() * pokemon.length);
-    const selectedPokemon = pokemon[randomIndex];
-    setRandomPokemon(selectedPokemon);
-    console.log("Random Pokémon:", selectedPokemon);
+    const randomPokemonList = [];
+    while (randomPokemonList.length < 3) {
+      const randomIndex = Math.floor(Math.random() * pokemon.length);
+      const selectedPokemon = pokemon[randomIndex];
+      randomPokemonList.push(selectedPokemon);
+    }
+    // Update the displayCards state with 3 random Pokémon
+    setDisplayCards(randomPokemonList.map(pokemon => ({
+      name: pokemon,
+    })));
+    console.log("Random Pokémon List:", randomPokemonList);
   };
 
   const handleRecommendClick = async () => {
@@ -114,14 +123,30 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon }) => {
     <div>
       <h3>Pokémon Suggestor</h3>
 
-      <button onClick={handleRandomClick} disabled={loading || pokemon.length === 0}>
-        Random Pokémon
-      </button>
-      {randomPokemon && <p>Random Pokémon: {randomPokemon.name}</p>}
+      {/* Layout for cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        {displayCards.map((card, index) => (
+          <SuggestorCard key={index} name={card.name} url={url}/>
+        ))}
+      </div>
 
-      <button onClick={handleRecommendClick} disabled={teamData.length < 3 || loading}>
-        Recommend Pokémon
-      </button>
+      <div style={{ display: 'flex', marginTop: '20px' }}>
+        {/* Left column for Randomizer */}
+        <div style={{ flex: 1 }}>
+          <label>Randomizer</label>
+          <button onClick={handleRandomClick} disabled={loading || pokemon.length === 0}>
+            Generate 3 Random Pokémon
+          </button>
+        </div>
+
+        {/* Right column for Suggestor */}
+        <div style={{ flex: 1 }}>
+          <label>Suggestor</label>
+          <button onClick={handleRecommendClick} disabled={teamData.length < 3 || loading}>
+            Recommend Pokémon
+          </button>
+        </div>
+      </div>
 
       {loading ? (
         <div className="loader-wrapper">
