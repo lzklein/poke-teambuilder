@@ -34,6 +34,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [displayCards, setDisplayCards] = useState([{},{},{}]); // 3 empty Pokémon objects for the SuggestorCard
+  const [renderDisplay, setRenderDisplay] = useState(false);
 
   const countFulfilledRoles = (moves) => {
     let fulfilledRoles = 0;
@@ -63,20 +64,23 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
 
   const handleRandomClick = () => {
     if (!pokemon || pokemon.length === 0) return;
-
+  
     const randomPokemonList = [];
+    const selectedIndexes = new Set();
+  
     while (randomPokemonList.length < 3) {
       const randomIndex = Math.floor(Math.random() * pokemon.length);
-      const selectedPokemon = pokemon[randomIndex];
-      randomPokemonList.push(selectedPokemon);
+      if (!selectedIndexes.has(randomIndex)) {
+        selectedIndexes.add(randomIndex);
+        const selectedPokemon = pokemon[randomIndex];
+        randomPokemonList.push(selectedPokemon);
+      }
     }
-    // Update the displayCards state with 3 random Pokémon
-    setDisplayCards(randomPokemonList.map(pokemon => ({
-      name: pokemon,
-    })));
-    console.log("Random Pokémon List:", randomPokemonList);
+  
+    setDisplayCards(randomPokemonList.map((pokemon) => ({ name: pokemon })));
+    setRenderDisplay(true); 
   };
-
+  
   const handleRecommendClick = async () => {
     if (teamData.length < 3) return;
 
@@ -116,6 +120,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
       console.error("Error fetching Pokémon suggestions:", error);
     } finally {
       setLoading(false);
+      setRenderDisplay(true);
     }
   };
 
@@ -126,7 +131,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
       {/* Layout for cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
         {displayCards.map((card, index) => (
-          <SuggestorCard key={index} name={card.name} url={url}/>
+          <SuggestorCard key={index} name={card.name} url={url} renderDisplay={renderDisplay}/>
         ))}
       </div>
 
