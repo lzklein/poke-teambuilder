@@ -2,7 +2,7 @@ import React from 'react'
 
 import Pokecard from './pokecard.js';
 
-const Team = ({pokemon, url, setTeamData, setTeamStats, setTypeCounts, setMoveTypes}) => {
+const Team = ({pokemon, url, setTeamData, setTeamStats, setTypeCounts, setMoveTypes, selectedCardData,cardDataButtonPressed}) => {
   return (
     <div className="team-container">
         {pokemon.slice(0, 6).map((mon, index) => (
@@ -14,6 +14,8 @@ const Team = ({pokemon, url, setTeamData, setTeamStats, setTypeCounts, setMoveTy
         setTeamStats={setTeamStats} 
         setTypeCounts={setTypeCounts}
         setMoveTypes={setMoveTypes}
+        selectedCardData={selectedCardData}
+        cardDataButtonPressed={cardDataButtonPressed}
         />
         ))}
     </div>
