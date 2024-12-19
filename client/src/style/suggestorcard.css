@@ -1,6 +1,6 @@
 .suggestorCardContainer {
-    width: 120px; /* Set a fixed width */
-    height: 200px; /* Set a fixed height */
+    width: 120px;
+    height: 200px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,31 +9,35 @@
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Ensure content does not overflow */
+    overflow: hidden;
     text-align: center;
   }
   
-  .suggestorName {
-    font-size: 1rem;
-    margin: 15px 0;
-    max-width: 100%; /* Prevent text overflow */
-    white-space: nowrap; /* Prevent wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for overflow */
-  }
-  
   .suggestorCard {
-    width: 140px;
-    height: 210px;
+    width: 140px; /* Fixed width */
+    height: 200px; /* Fixed height */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     border-radius: 10px;
     color: #000000;
     text-align: center;
     padding: 10px;
     transition: background-color 0.3s;
+    overflow: hidden; /* Prevent overflow from the content */
+    box-sizing: border-box; /* Ensure padding doesn't affect width calculation */
+  }
+  
+  .suggestorName {
+    font-size: 1rem;
+    margin: 15px 0;
+    width: 100%; /* Ensure it takes the full width of the parent */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowed text */
+    text-overflow: ellipsis; /* Show "..." when text overflows */
+    display: block; /* Make sure it's block level to respect width */
+    text-align: center; /* Ensure it's aligned properly */
   }
   
   .suggestorCard.normal { background-color: #A8A77A; }
@@ -54,3 +58,42 @@
   .suggestorCard.dark { background-color: #705746; }
   .suggestorCard.steel { background-color: #B7B7CE; }
   .suggestorCard.fairy { background-color: #D685AD; }
+  
+  .buttonGridView {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    height: calc(100% - 50px);
+  }
+  
+  .buttonGrid {
+    padding: 5px 10px;
+    font-size: 1.0em;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .backButton {
+    grid-column: span 3;
+    padding: 5px;
+    font-size: 1.2em;
+    background-color: #f00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .buttonGrid:hover {
+    background-color: #ddd;
+  }
+  
+  .backButton:hover {
+    background-color: rgb(191, 0, 0);
+  }
+  
