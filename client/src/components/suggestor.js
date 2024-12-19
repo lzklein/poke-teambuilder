@@ -30,7 +30,7 @@ const fetchPokemonDetails = async (pokemonName) => {
   };
 };
 
-const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
+const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [displayCards, setDisplayCards] = useState([{},{},{}]); // 3 empty Pokémon objects for the SuggestorCard
@@ -131,7 +131,12 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url }) => {
       {/* Layout for cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
         {displayCards.map((card, index) => (
-          <SuggestorCard key={index} name={card.name} url={url} renderDisplay={renderDisplay}/>
+          <SuggestorCard key={index} 
+          name={card.name} 
+          url={url}
+          renderDisplay={renderDisplay}
+          setSelectedCardData={setSelectedCardData}
+          setCardDataButtonPressed={setCardDataButtonPressed}/>
         ))}
       </div>
 
