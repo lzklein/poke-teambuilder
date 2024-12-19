@@ -26,14 +26,14 @@ const fetchPokemonDetails = async (pokemonName) => {
     moves,
     types,
     baseStatTotal: stats,
-    imageUrl: data.sprites.front_default, // Adding image URL
+    imageUrl: data.sprites.front_default,
   };
 };
 
 const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [displayCards, setDisplayCards] = useState([{},{},{}]); // 3 empty Pokémon objects for the SuggestorCard
+  const [displayCards, setDisplayCards] = useState([{},{},{}]);
   const [renderDisplay, setRenderDisplay] = useState(false);
 
   const countFulfilledRoles = (moves) => {

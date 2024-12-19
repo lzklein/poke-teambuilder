@@ -60,13 +60,13 @@ const SuggestorCard = ({ name, url, renderDisplay, setSelectedCardData, setCardD
   };
 
   const handleNumberClick = (e, buttonNumber) => {
-    e.stopPropagation(); // Prevent the event from bubbling up
+    e.stopPropagation();
     
     if (cardData) {
       setSelectedCardData({ index: buttonNumber - 1, name: cardData.name });
     }
-    setCardDataButtonPressed(true); // Trigger the useEffect
-    handleBackClick(e); // Pass the event to handleBackClick if it needs it
+    setCardDataButtonPressed(true);
+    handleBackClick(e); 
   };
   
   return (
