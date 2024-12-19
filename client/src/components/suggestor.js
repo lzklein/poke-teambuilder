@@ -30,11 +30,12 @@ const fetchPokemonDetails = async (pokemonName) => {
   };
 };
 
-const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed }) => {
+const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed, weaknessMap, coverageCounts }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [displayCards, setDisplayCards] = useState([{},{},{}]);
   const [renderDisplay, setRenderDisplay] = useState(false);
+  const [typeWeightMons, setTypeWeightMons] = useState([]);
 
   const countFulfilledRoles = (moves) => {
     let fulfilledRoles = 0;
@@ -56,18 +57,66 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     return fulfilledRoles;
   };
 
-  const calculateTypingWeight = (pokemonTypes) => {
-    return pokemonTypes.reduce((weight, type) => {
-      return weight + (typeCounts[type] || 0);
-    }, 0);
+  const calculateTypeWeights = () => {
+    const typeWeights = {};
+
+    Object.entries(weaknessMap).forEach(([type, weakness]) => {
+      if (weakness > 2) {
+        typeWeights[type] = (typeWeights[type] || 0) + (weakness - 2);
+      } else {
+        typeWeights[type] = (typeWeights[type] || 0) - (2 - weakness);
+      }
+    });
+
+    Object.entries(coverageCounts).forEach(([type, coverage]) => {
+      if (coverage < 2) {
+        typeWeights[type] = (typeWeights[type] || 0) + (2 - coverage);
+      } else {
+        typeWeights[type] = (typeWeights[type] || 0) - (coverage - 2);
+      }
+    });
+
+    console.log(typeWeights)
+
+    return Object.entries(typeWeights)
+      .sort(([, weightA], [, weightB]) => weightB - weightA)
+      .slice(0, 3)
+      .map(([type]) => type);
   };
+
+  const handleTypeWeightCalculation = async () => {
+    setLoading(true);
+    try {
+      const topTypes = calculateTypeWeights(); 
+      console.log(topTypes);
+  
+      const allPokemons = new Set();
+  
+      for (let type of topTypes) {
+        const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+        const data = await res.json();
+  
+        data.pokemon.forEach(p => allPokemons.add(p.pokemon.name));
+      }
+  
+      setTypeWeightMons(Array.from(allPokemons)); 
+      console.log(Array.from(allPokemons));
+    } catch (error) {
+      console.error("Error calculating type-weighted Pokémon:", error);
+    } finally {
+      setLoading(false);
+      console.log(typeWeightMons);
+    }
+  };
+  
+  
 
   const handleRandomClick = () => {
     if (!pokemon || pokemon.length === 0) return;
-  
+
     const randomPokemonList = [];
     const selectedIndexes = new Set();
-  
+
     while (randomPokemonList.length < 3) {
       const randomIndex = Math.floor(Math.random() * pokemon.length);
       if (!selectedIndexes.has(randomIndex)) {
@@ -76,52 +125,14 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
         randomPokemonList.push(selectedPokemon);
       }
     }
-  
+
     setDisplayCards(randomPokemonList.map((pokemon) => ({ name: pokemon })));
     setRenderDisplay(true); 
   };
-  
+
   const handleRecommendClick = async () => {
     if (teamData.length < 3) return;
-
-    setLoading(true);
-    try {
-      let pokemonList = [];
-      Object.keys(typeCounts).forEach(type => {
-        if (typeCounts[type] > 0) {
-          pokemonList.push(...pokemon.filter(p => p.types.includes(type)).map(p => p.name));
-        }
-      });
-
-      pokemonList = [...new Set(pokemonList)];
-
-      const pokemonDetails = [];
-      for (const pokemonName of pokemonList) {
-        const details = await fetchPokemonDetails(pokemonName);
-        const fulfilledRoles = countFulfilledRoles(details.moves);
-        const typingWeight = calculateTypingWeight(details.types);
-
-        if (fulfilledRoles >= 3) {
-          const score = fulfilledRoles * 2 + typingWeight + details.baseStatTotal / 100;
-          pokemonDetails.push({
-            ...details,
-            fulfilledRoles,
-            typingWeight,
-            score,
-          });
-        }
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
-
-      pokemonDetails.sort((a, b) => b.score - a.score);
-      setSuggestions(pokemonDetails.slice(0, 3));
-      console.log("Suggested Pokémon:", pokemonDetails.slice(0, 3));
-    } catch (error) {
-      console.error("Error fetching Pokémon suggestions:", error);
-    } finally {
-      setLoading(false);
-      setRenderDisplay(true);
-    }
+    handleTypeWeightCalculation()
   };
 
   return (
@@ -131,17 +142,18 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
       {/* Layout for cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
         {displayCards.map((card, index) => (
-          <SuggestorCard key={index} 
-          name={card.name} 
-          url={url}
-          renderDisplay={renderDisplay}
-          setSelectedCardData={setSelectedCardData}
-          setCardDataButtonPressed={setCardDataButtonPressed}/>
+          <SuggestorCard 
+            key={index} 
+            name={card.name} 
+            url={url}
+            renderDisplay={renderDisplay}
+            setSelectedCardData={setSelectedCardData}
+            setCardDataButtonPressed={setCardDataButtonPressed}
+          />
         ))}
       </div>
 
       <div style={{ display: 'flex', marginTop: '20px' }}>
-        {/* Left column for Randomizer */}
         <div style={{ flex: 1 }}>
           <label>Randomizer</label>
           <button onClick={handleRandomClick} disabled={loading || pokemon.length === 0}>
@@ -149,10 +161,11 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
           </button>
         </div>
 
-        {/* Right column for Suggestor */}
         <div style={{ flex: 1 }}>
           <label>Suggestor</label>
-          <button onClick={handleRecommendClick} disabled={teamData.length < 3 || loading}>
+          <button 
+            onClick={handleRecommendClick} 
+            disabled={Object.values(typeCounts).filter(type => type === '').length > 3 || loading}>
             Recommend Pokémon
           </button>
         </div>
@@ -181,7 +194,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
             ))}
           </ul>
         ) : (
-          !loading && <p>No suggestions available.</p>
+          renderDisplay && <p>No suggestions available. Try a different approach!</p>
         )}
       </div>
     </div>
