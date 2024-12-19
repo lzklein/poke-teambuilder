@@ -7,6 +7,8 @@ import Overview from './overview';
 import Footer from './footer';
 
 const Home = ({pokemon, url}) => {
+  const [selectedCardData, setSelectedCardData] = useState(null);
+  const [cardDataButtonPressed, setCardDataButtonPressed]=  useState(false);
   const [teamData, setTeamData] = useState([[],[],[],[],[],[]]);
   const [teamStats, setTeamStats] = useState([[],[],[],[],[],[]]);
   const [typeCounts, setTypeCounts] = useState(['','','','','','']);
@@ -51,6 +53,8 @@ const Home = ({pokemon, url}) => {
         setTeamStats={setTeamStats} 
         setTypeCounts={setTypeCounts}
         setMoveTypes={setMoveTypes}
+        selectedCardData={selectedCardData}
+        cardDataButtonPressed={cardDataButtonPressed}
         />
         <div className="right-column">
           <Checklist teamData={teamData} setCheckedState={setCheckedState} checkedState={checkedState}/>
@@ -59,7 +63,10 @@ const Home = ({pokemon, url}) => {
           typeCounts={typeCounts} 
           moveTypes={moveTypes} 
           pokemon={pokemon}
-          url={url}/>
+          url={url}
+          setSelectedCardData={setSelectedCardData}
+          setCardDataButtonPressed={setCardDataButtonPressed}
+          />
         </div>
       </div>
       <Footer />  
