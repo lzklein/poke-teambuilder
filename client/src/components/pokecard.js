@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Missingno from '../assets/missingno.png';
 
-const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts, setMoveTypes }) => {
+const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts, setMoveTypes, selectedCardData, cardDataButtonPressed }) => {
   const [selectedMon, setSelectedMon] = useState('');
   const [pokeData, setPokeData] = useState(null);
   const [shiny, setShiny] = useState(false);
@@ -9,6 +9,12 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
   const [selectedMoveTypes, setSelectedMoveTypes] = useState(['','','','']);
   const [selectedAbility, setSelectedAbility] = useState('');
   const [pokemonType, setPokemonType] = useState('');
+
+  useEffect(()=>{
+    if(cardDataButtonPressed && ind===selectedCardData.index){
+      setSelectedMon(selectedCardData.name);
+    }
+  },[selectedCardData, ind, cardDataButtonPressed])
 
   useEffect(() => {
     if (!selectedMon) return;
