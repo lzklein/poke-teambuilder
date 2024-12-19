@@ -32,8 +32,18 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
         setSelectedMoves(['', '', '', '']);
         setSelectedMoveTypes(['', '', '', '']);
         setPokemonType(data.types[0]?.type?.name);
+        setMoveTypes((prevMoveTypes) => {
+          const updatedTypes = { ...prevMoveTypes };
+          selectedMoveTypes.forEach((moveType) => {
+            if (moveType) {
+              updatedTypes[moveType] = Math.max(0, (updatedTypes[moveType] || 0) - 1);
+            }
+          });
+          return updatedTypes;
+        });
       })
       .catch((error) => console.error('Error fetching Pokémon data:', error));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMon, url]);
 
   useEffect(() => {
