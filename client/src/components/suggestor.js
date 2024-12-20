@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SuggestorCard from './suggestorcard';
 
 const hazards = ['sticky-web', 'stealth-rock', 'spikes', 'toxic-spikes', 'stone-axe', 'ceaseless-edge', 'toxic-debris'];
@@ -20,25 +20,35 @@ const fetchPokemonDetails = async (pokemonName) => {
   const moves = data.moves.map(m => m.move.name);
   const types = data.types.map(t => t.type.name);
   const stats = data.stats.reduce((total, stat) => total + stat.base_stat, 0);
+  const abilities = data.abilities.map(ability => ability.ability.name);
 
   return {
     name: data.name,
     moves,
     types,
+    abilities,
     baseStatTotal: stats,
-    imageUrl: data.sprites.front_default,
   };
 };
 
-const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed, weaknessMap, coverageCounts }) => {
-  const [suggestions, setSuggestions] = useState([]);
+const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed, weaknessMap, coverageCounts, calculateWeaknesses }) => {
   const [loading, setLoading] = useState(false);
   const [displayCards, setDisplayCards] = useState([{},{},{}]);
   const [renderDisplay, setRenderDisplay] = useState(false);
   const [typeWeightMons, setTypeWeightMons] = useState([]);
 
-  const countFulfilledRoles = (moves) => {
+  useEffect(()=>{
+    const top3Pokemons = typeWeightMons
+    .sort((a, b) => b.baseStatTotal - a.baseStatTotal) 
+    .slice(0, 3);
+
+    console.log(top3Pokemons);
+  },[typeWeightMons])
+
+  const fulfilledRolesWeight = (moves) => {
     let fulfilledRoles = 0;
+    const fulfilledRolesList = [];
+    
     const roles = [
       { name: "Hazards", moves: hazards },
       { name: "Phazers", moves: phazers },
@@ -49,18 +59,22 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
       { name: "Spinner", moves: spinner },
       { name: "Recovery", moves: recovery }
     ];
-    roles.forEach(role => {
-      if (moves.some(move => role.moves.includes(move))) {
+  
+    roles.forEach((role) => {
+      if (moves.some((move) => role.moves.includes(move))) {
         fulfilledRoles += 1;
+        fulfilledRolesList.push(role.name); // Store the fulfilled role's name
       }
     });
-    return fulfilledRoles;
+  
+    return { fulfilledRoles, fulfilledRolesList };
   };
+  
 
   const calculateTypeWeights = () => {
     const typeWeights = {};
 
-    Object.entries(weaknessMap).forEach(([type, weakness]) => {
+    Object.entries(calculateWeaknesses(weaknessMap)).forEach(([type, weakness]) => {
       if (weakness > 2) {
         typeWeights[type] = (typeWeights[type] || 0) + (weakness - 2);
       } else {
@@ -90,26 +104,41 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
       const topTypes = calculateTypeWeights(); 
       console.log(topTypes);
   
-      const allPokemons = new Set();
+      const allPokemons = [];
   
       for (let type of topTypes) {
         const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
         const data = await res.json();
   
-        data.pokemon.forEach(p => allPokemons.add(p.pokemon.name));
-      }
+        for (let p of data.pokemon) {
+          const pokemonDetails = await fetchPokemonDetails(p.pokemon.name);
   
-      setTypeWeightMons(Array.from(allPokemons)); 
-      console.log(Array.from(allPokemons));
+          const { fulfilledRoles, fulfilledRolesList } = fulfilledRolesWeight(pokemonDetails.moves);
+  
+          allPokemons.push({
+            ...pokemonDetails,
+            fulfilledRoles,
+            fulfilledRolesList,
+            score: pokemonDetails.baseStatTotal + fulfilledRoles * 10, 
+          });
+        }
+      }
+
+      console.log(allPokemons)
+  
+      const top20Pokemons = allPokemons
+        .sort((a, b) => b.score - a.score)  
+        .slice(0, 20);  
+  
+      setTypeWeightMons(top20Pokemons);
+      console.log(top20Pokemons);
+  
     } catch (error) {
       console.error("Error calculating type-weighted Pokémon:", error);
     } finally {
       setLoading(false);
-      console.log(typeWeightMons);
     }
   };
-  
-  
 
   const handleRandomClick = () => {
     if (!pokemon || pokemon.length === 0) return;
@@ -138,20 +167,6 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
   return (
     <div>
       <h3>Pokémon Suggestor</h3>
-
-      {/* Layout for cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-        {displayCards.map((card, index) => (
-          <SuggestorCard 
-            key={index} 
-            name={card.name} 
-            url={url}
-            renderDisplay={renderDisplay}
-            setSelectedCardData={setSelectedCardData}
-            setCardDataButtonPressed={setCardDataButtonPressed}
-          />
-        ))}
-      </div>
 
       <div style={{ display: 'flex', marginTop: '20px' }}>
         <div style={{ flex: 1 }}>
@@ -184,18 +199,18 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
         <p>Suggestions will appear below...</p>
       )}
 
-      <div style={{ marginTop: '20px' }}>
-        {suggestions.length > 0 ? (
-          <ul>
-            {suggestions.map((pokemon, index) => (
-              <li key={index}>
-                <strong>{pokemon.name.toUpperCase()}</strong> - Roles: {pokemon.fulfilledRoles}, Typing Weight: {pokemon.typingWeight}, Score: {pokemon.score.toFixed(2)}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          renderDisplay && <p>No suggestions available. Try a different approach!</p>
-        )}
+      {/* Layout for cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        {displayCards.map((card, index) => (
+          <SuggestorCard 
+            key={index} 
+            name={card.name} 
+            url={url}
+            renderDisplay={renderDisplay}
+            setSelectedCardData={setSelectedCardData}
+            setCardDataButtonPressed={setCardDataButtonPressed}
+          />
+        ))}
       </div>
     </div>
   );
