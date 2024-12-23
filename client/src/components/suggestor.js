@@ -63,7 +63,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     roles.forEach((role) => {
       if (moves.some((move) => role.moves.includes(move))) {
         fulfilledRoles += 1;
-        fulfilledRolesList.push(role.name); // Store the fulfilled role's name
+        fulfilledRolesList.push(role.name);
       }
     });
   
