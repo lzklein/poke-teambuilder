@@ -17,6 +17,8 @@ const fetchPokemonDetails = async (pokemonName) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
   const data = await res.json();
 
+  console.log(data);
+
   const moves = data.moves.map(m => m.move.name);
   const types = data.types.map(t => t.type.name);
   const stats = data.stats.reduce((total, stat) => total + stat.base_stat, 0);
@@ -36,6 +38,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
   const [displayCards, setDisplayCards] = useState([{},{},{}]);
   const [renderDisplay, setRenderDisplay] = useState(false);
   const [typeWeightMons, setTypeWeightMons] = useState([]);
+  const [excludingLegendary, setExcludingLegendary] = useState(false);
 
   useEffect(()=>{
     const top3Pokemons = typeWeightMons
@@ -113,6 +116,10 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
         for (let p of data.pokemon) {
           const pokemonDetails = await fetchPokemonDetails(p.pokemon.name);
   
+          if (excludingLegendary && pokemonDetails.baseStatTotal >= 600) {
+            continue;
+          }
+
           const { fulfilledRoles, fulfilledRolesList } = fulfilledRolesWeight(pokemonDetails.moves);
   
           allPokemons.push({
@@ -164,6 +171,12 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     handleTypeWeightCalculation()
   };
 
+  const toggleLegendary = () => {
+    setExcludingLegendary(!excludingLegendary);
+  }
+
+  console.log(excludingLegendary)
+
   return (
     <div>
       <h3>Pokémon Suggestor</h3>
@@ -183,6 +196,12 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
             disabled={Object.values(typeCounts).filter(type => type === '').length > 3 || loading}>
             Recommend Pokémon
           </button>
+          <input
+            type='checkbox'
+            checked={excludingLegendary}
+            onClick={toggleLegendary}
+          />
+          <p>Exclude Legendaries</p>
         </div>
       </div>
 
