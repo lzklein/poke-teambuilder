@@ -51,7 +51,9 @@ const SuggestorCard = ({ name, url, renderDisplay, setSelectedCardData, setCardD
   
 
   const handleCardClick = () => {
-    setIsGridView(true); 
+    if(renderDisplay){
+      setIsGridView(true); 
+    }
   };
 
   const handleBackClick = (e) => {
