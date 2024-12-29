@@ -97,7 +97,6 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
     }
     let weaknessMap = {};
   
-    console.log(typesArray);
     // Initialize weaknessMap with all types having 0
     types.forEach((type) => {
       weaknessMap[type] = 0;
@@ -152,8 +151,6 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
         });
       }
     });
-  
-    console.log(typeCounts, weaknessMap);
     return weaknessMap;  // Just return the map, no state setting here
   };
   
