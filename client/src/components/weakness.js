@@ -12,7 +12,9 @@ const Weakness = ({ types, weaknessMap }) => {
               <div className={`type-box ${type}`}>
                 {type}
               </div>
-              <div className="coverage-count">
+              <div className="coverage-count"
+                style={{color: weaknessMap[type] >= 3 ? 'red' : 'black'}}
+              >
                 {weaknessMap[type] || 0}
               </div>
             </div>

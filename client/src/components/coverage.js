@@ -12,7 +12,11 @@ const Coverage = ({ types, coverageCounts }) => {
               <div className={`type-box ${type}`}>
                 {type}
               </div>
-              <div className="coverage-count">{coverageCounts[type]}</div>
+              <div className="coverage-count"
+                style={{color: coverageCounts[type] >= 3 ? 'green' : 'black'}}
+              >
+                {coverageCounts[type]}
+              </div>
             </div>
           ))}
         </div>
