@@ -10,7 +10,7 @@ const types = [
   "rock", "ghost", "dragon", "dark", "steel", "fairy"
 ];
 
-const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed }) => {
+const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed, checkedState }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [weaknessMap, setWeaknessMap] = useState({});
   const [coverageCounts, setCoverageCounts] = useState(
@@ -196,15 +196,15 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
         </div>
         <div className="page">
           <Suggestor typeCounts={typeCounts} 
-          teamData={teamData} 
-          moveTypes={moveTypes} 
-          pokemon={pokemon} 
-          url={url} 
-          setSelectedCardData={setSelectedCardData}
-          setCardDataButtonPressed={setCardDataButtonPressed}
-          weaknessMap={weaknessMap}
-          coverageCounts={coverageCounts}
-          calculateWeaknesses={calculateWeaknesses}
+            teamData={teamData} 
+            pokemon={pokemon} 
+            url={url} 
+            setSelectedCardData={setSelectedCardData}
+            setCardDataButtonPressed={setCardDataButtonPressed}
+            weaknessMap={weaknessMap}
+            coverageCounts={coverageCounts}
+            calculateWeaknesses={calculateWeaknesses}
+            checkedState={checkedState}
           />
         </div>
       </div>
