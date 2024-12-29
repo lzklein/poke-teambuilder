@@ -17,8 +17,6 @@ const fetchPokemonDetails = async (pokemonName) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
   const data = await res.json();
 
-  console.log(data);
-
   const moves = data.moves.map(m => m.move.name);
   const types = data.types.map(t => t.type.name);
   const stats = data.stats.reduce((total, stat) => total + stat.base_stat, 0);
@@ -45,7 +43,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     .sort((a, b) => b.baseStatTotal - a.baseStatTotal) 
     .slice(0, 3);
 
-    console.log(top3Pokemons);
+    setDisplayCards(top3Pokemons.map((pokemon) => ({ name: pokemon.name })));
   },[typeWeightMons])
 
   const fulfilledRolesWeight = (moves) => {
@@ -93,8 +91,6 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
       }
     });
 
-    console.log(typeWeights)
-
     return Object.entries(typeWeights)
       .sort(([, weightA], [, weightB]) => weightB - weightA)
       .slice(0, 3)
@@ -104,49 +100,54 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
   const handleTypeWeightCalculation = async () => {
     setLoading(true);
     try {
-      const topTypes = calculateTypeWeights(); 
-      console.log(topTypes);
-  
+      const topTypes = calculateTypeWeights();  
       const allPokemons = [];
+      const batchSize = 10; // Define the size of each batch
   
       for (let type of topTypes) {
         const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
         const data = await res.json();
   
-        for (let p of data.pokemon) {
-          const pokemonDetails = await fetchPokemonDetails(p.pokemon.name);
+        // Create a list of Pokémon names for this type
+        const pokemonNames = data.pokemon.map(p => p.pokemon.name);
   
-          if (excludingLegendary && pokemonDetails.baseStatTotal >= 600) {
-            continue;
+        // Process Pokémon details in batches
+        for (let i = 0; i < pokemonNames.length; i += batchSize) {
+          const batch = pokemonNames.slice(i, i + batchSize);
+          const batchPromises = batch.map(fetchPokemonDetails);
+  
+          // Fetch and process batch
+          const batchResults = await Promise.all(batchPromises);
+  
+          for (let pokemonDetails of batchResults) {
+            if (excludingLegendary && pokemonDetails.baseStatTotal >= 600) {
+              continue;
+            }
+  
+            const { fulfilledRoles, fulfilledRolesList } = fulfilledRolesWeight(pokemonDetails.moves);
+  
+            allPokemons.push({
+              ...pokemonDetails,
+              fulfilledRoles,
+              fulfilledRolesList,
+              score: pokemonDetails.baseStatTotal + fulfilledRoles * 10,
+            });
           }
-
-          const { fulfilledRoles, fulfilledRolesList } = fulfilledRolesWeight(pokemonDetails.moves);
-  
-          allPokemons.push({
-            ...pokemonDetails,
-            fulfilledRoles,
-            fulfilledRolesList,
-            score: pokemonDetails.baseStatTotal + fulfilledRoles * 10, 
-          });
         }
       }
-
-      console.log(allPokemons)
-  
+    
       const top20Pokemons = allPokemons
-        .sort((a, b) => b.score - a.score)  
-        .slice(0, 20);  
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 20);
   
       setTypeWeightMons(top20Pokemons);
-      console.log(top20Pokemons);
-  
     } catch (error) {
       console.error("Error calculating type-weighted Pokémon:", error);
     } finally {
       setLoading(false);
     }
   };
-
+  
   const handleRandomClick = () => {
     if (!pokemon || pokemon.length === 0) return;
 
@@ -175,8 +176,6 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     setExcludingLegendary(!excludingLegendary);
   }
 
-  console.log(excludingLegendary)
-
   return (
     <div>
       <h3>Pokémon Suggestor</h3>
@@ -199,7 +198,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
           <input
             type='checkbox'
             checked={excludingLegendary}
-            onClick={toggleLegendary}
+            onChange={toggleLegendary}
           />
           <p>Exclude Legendaries</p>
         </div>
