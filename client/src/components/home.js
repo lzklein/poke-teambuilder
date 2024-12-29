@@ -48,24 +48,25 @@ const Home = ({pokemon, url}) => {
       <Header />
       <div className="columns">
         <Team pokemon={pokemon}
-        url={url} 
-        setTeamData={setTeamData} 
-        setTeamStats={setTeamStats} 
-        setTypeCounts={setTypeCounts}
-        setMoveTypes={setMoveTypes}
-        selectedCardData={selectedCardData}
-        cardDataButtonPressed={cardDataButtonPressed}
+          url={url} 
+          setTeamData={setTeamData} 
+          setTeamStats={setTeamStats} 
+          setTypeCounts={setTypeCounts}
+          setMoveTypes={setMoveTypes}
+          selectedCardData={selectedCardData}
+          cardDataButtonPressed={cardDataButtonPressed}
         />
         <div className="right-column">
           <Checklist teamData={teamData} setCheckedState={setCheckedState} checkedState={checkedState}/>
           <Overview teamStats={teamStats} 
-          teamData={teamData} 
-          typeCounts={typeCounts} 
-          moveTypes={moveTypes} 
-          pokemon={pokemon}
-          url={url}
-          setSelectedCardData={setSelectedCardData}
-          setCardDataButtonPressed={setCardDataButtonPressed}
+            teamData={teamData} 
+            typeCounts={typeCounts} 
+            moveTypes={moveTypes} 
+            pokemon={pokemon}
+            url={url}
+            setSelectedCardData={setSelectedCardData}
+            setCardDataButtonPressed={setCardDataButtonPressed}
+            checkedState={checkedState}
           />
         </div>
       </div>
