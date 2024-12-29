@@ -5,7 +5,6 @@ const Checklist = ({ teamData, setCheckedState, checkedState }) => {
     "Hazards", "Phazer", "Pivot", "Cleric", "Status", "Trapper", "Spinner", "Recovery"
   ];
 
-
   // Checking teamData to checkbox
   useEffect(() => {
     const hazards = ['sticky-web', 'stealth-rock', 'spikes', 'toxic-spikes', 'stone-axe', 'ceaseless-edge', 'toxic-debris'];
@@ -42,7 +41,6 @@ const Checklist = ({ teamData, setCheckedState, checkedState }) => {
     });
   }, [teamData, setCheckedState]);
   
-
   return (
     <div style={{marginTop:'20px'}}>
       <h4 className='checkboxLabel'>Teambuilding Checklist</h4>
