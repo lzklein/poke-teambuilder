@@ -19,6 +19,19 @@ const recovery = ['aqua-ring','floral-healing','heal-pulse', 'healing-wish', 'in
   'life-dew', 'lunar-dance', 'pain-split', 'pollen-puff', 'present', 'revival-blessing', 'wish', 'regenerator', 'milk-drink',
   'moonlight', 'morning-sun', 'slack-off', 'recover' , 'synthesis', 'roost'
 ];
+const priority = ['accelerock', 'aqua-jet', 'bullet-punch', 'grassy-glide', 'ice-shard', 'jet-punch', 'extreme-speed',
+  'mach-punch', 'quick-attack', 'shadow-sneak', 'sucker-punch', 'thunderclap', 'vacuum-wave', 'water-shuriken',
+  'first-impression', 'fake-out'
+];
+const setup = ['acupressure', 'belly-drum', 'bulk-up', 'clangorous-soul', 'coil', 'curse', 'dragon-dance', 'gear-up',
+  'shift-gear', 'growth', 'hone-claws', 'howl', 'no-retreat', 'shell-smash', 'swords-dance', 'work-up', 'calm-mind',
+  'fiery-dance', 'charge-beam', 'geomancy', 'meteor-beam', 'nasty-plot', 'quiver-dance', 'acid-armor', 'barrier', 'cosmic-power',
+  'defend-order', 'diamond-storm', 'defense-curl', 'harden', 'magnetic-flux', 'stockpile', 'agility', 'amnesia', 'withdraw',
+  'stuff-cheeks', 'skull-bash', 'iron-defense', 'flower-shield', 'charge', 'aura-wheel', 'autotomize', 'flame-charge',
+  'tailwind', 'rapid-spin', 'rock-polish', 'scale-shot'
+]
+
+
 const fetchPokemonDetails = async (pokemonName) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
   const data = await res.json();
@@ -68,7 +81,9 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
       { name: "Status", moves: status },
       { name: "Trapper", moves: trapper },
       { name: "Spinner", moves: spinner },
-      { name: "Recovery", moves: recovery }
+      { name: "Recovery", moves: recovery },
+      { name: "Priority", moves: priority },
+      { name: "Setup", moves: setup }
     ];
   
     roles.forEach((role) => {
