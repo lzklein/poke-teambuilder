@@ -10,6 +10,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
   const [selectedAbility, setSelectedAbility] = useState('');
   const [pokemonType, setPokemonType] = useState('');
 
+  // ! this sets name to "bulbasaur" (1st value), unsure why or how to fix, but harmless (?)
   useEffect(()=>{
     if(cardDataButtonPressed && ind===selectedCardData.index){
       setSelectedMon(selectedCardData.name);
@@ -287,7 +288,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
       {/* Pokémon Selector Dropdown */}
       <div className="selectContainer">
         <select
-          defaultValue=""
+          value={selectedMon || ""}
           onChange={handleSelect}
           className={`selectDropdown ${typeClassName}`}
         >
