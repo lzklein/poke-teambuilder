@@ -145,7 +145,7 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
           const batchResults = await Promise.all(batchPromises);
   
           for (let pokemonDetails of batchResults) {
-            if (excludingLegendary && pokemonDetails.baseStatTotal >= 600) {
+            if (excludingLegendary && pokemonDetails.baseStatTotal > 600) {
               continue;
             }
   
@@ -162,6 +162,9 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
       }
     
       const top20Pokemons = allPokemons
+        .filter((pokemon, index, self) =>
+          self.findIndex(p => p.name === pokemon.name) === index //dupe check
+        )
         .sort((a, b) => b.fulfilledRoles - a.fulfilledRoles)
         .slice(0, 20);
   
