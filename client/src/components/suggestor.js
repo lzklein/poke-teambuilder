@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import SuggestorCard from './suggestorcard';
-
 const hazards = ['sticky-web', 'stealth-rock', 'spikes', 'toxic-spikes', 'stone-axe', 'ceaseless-edge', 'toxic-debris'];
 const phazers = ['dragon-tail', 'whirlwind', 'roar', 'circle-throw', 'haze', 'clear-smog'];
 const pivot = ['u-turn', 'volt-switch', 'flip-turn', 'parting-shot', 'teleport', 'baton-pass', 'chilly-reception'];
-const cleric = ['heal-bell', 'aromatherapy', 'jungle-healing', 'lunar-blessing', 'purify', 'refresh', 'take-heart'];
-const status = [
-  'will-o-wisp', 'scald', 'lava-plume', 'thunder-wave', 'toxic', 'spore', 'hypnosis', 'stun-spore',
-  'yawn', 'poison-jab', 'sludge-bomb', 'nuzzle', 'glare'
+const cleric = ['heal-bell','aromatherapy', 'jungle-healing', 'lunar-blessing', 'purify', 'refresh', 'take-heart'];
+const status = ['will-o-wisp', 'sacred-fire', 'scald', 'ice-burn', 'lava-plume', 'scorching-sands', 'searing-shot',
+  'steam-eruption', 'body-slam', 'discharge', 'dragon-breath','force-palm', 'freeze-shot', 'lick', 'spark', 'stun-spore',
+  'nuzzle', 'thunder-wave', 'zap-cannon', 'glare', 'grass-whistle', 'hypnosis', 'lovely-kiss', 'relic-song', 'sing',
+  'sleep-powder','spore', 'yawn', 'baneful-bunker', 'poison-fang', 'poison-jab', 'poison-sting', 'shell-side-arm',
+  'sludge', 'sludge-bomb', 'smog', 'toxic', 'toxic-spikes', 'toxic-thread', 'poison-gas', 'poison-powder', 'mortal-spin',
+  'dark-void', 'inferno', 'static', 'flame-body', 'poison-point', 'effect-spore'
 ];
-const trapper = ['mean-look', 'spider-web', 'spirit-shackle', 'block', 'jaw-lock', 'arena-trap', 'shadow-tag'];
-const spinner = ['rapid-spin', 'defog', 'mortal-spin', 'tidy-up', 'court-change'];
-const recovery = ['slack-off', 'roost', 'recover', 'wish', 'leech-seed', 'regenerator', 'life-dew'];
-
+const trapper = ['anchor-shot', 'block', 'fairy-lock', 'jaw-lock', 'octolock', 'mean-look', 'spider-web', 'spirit-shackle',
+  'pursuit','thousand-waves', 'arena-trap', 'magnet-pull', 'shadow-tag', 'whirlpool', 'fire-spin', 'sand-tomb', 'clamp',
+ 'wrap',];
+const spinner = ['mortal_spin', 'court-change', 'tidy-up', 'rapid-spin', 'defog'];
+const recovery = ['aqua-ring','floral-healing','heal-pulse', 'healing-wish', 'ingrain', 'jungle-healing', 'leech-seed',
+  'life-dew', 'lunar-dance', 'pain-split', 'pollen-puff', 'present', 'revival-blessing', 'wish', 'regenerator', 'milk-drink',
+  'moonlight', 'morning-sun', 'slack-off', 'recover' , 'synthesis', 'roost'
+];
 const fetchPokemonDetails = async (pokemonName) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
   const data = await res.json();
@@ -31,19 +37,23 @@ const fetchPokemonDetails = async (pokemonName) => {
   };
 };
 
-const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedCardData, setCardDataButtonPressed, weaknessMap, coverageCounts, calculateWeaknesses }) => {
+const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, setCardDataButtonPressed, weaknessMap, coverageCounts, calculateWeaknesses, checkedState }) => {
   const [loading, setLoading] = useState(false);
   const [displayCards, setDisplayCards] = useState([{},{},{}]);
   const [renderDisplay, setRenderDisplay] = useState(false);
   const [typeWeightMons, setTypeWeightMons] = useState([]);
-  const [excludingLegendary, setExcludingLegendary] = useState(false);
-
+  const [excludingLegendary, setExcludingLegendary] = useState(true);
+  
   useEffect(()=>{
     const top3Pokemons = typeWeightMons
     .sort((a, b) => b.baseStatTotal - a.baseStatTotal) 
     .slice(0, 3);
+    console.log(top3Pokemons.map(mon=>mon.fulfilledRolesList))
 
-    setDisplayCards(top3Pokemons.map((pokemon) => ({ name: pokemon.name })));
+    if (top3Pokemons.length > 0) {
+      setDisplayCards(top3Pokemons.map(pokemon => ({ name: pokemon.name })));
+      setRenderDisplay(true);
+    }
   },[typeWeightMons])
 
   const fulfilledRolesWeight = (moves) => {
@@ -62,6 +72,9 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     ];
   
     roles.forEach((role) => {
+      if (!!checkedState[role.name]){
+        return;
+      }
       if (moves.some((move) => role.moves.includes(move))) {
         fulfilledRoles += 1;
         fulfilledRolesList.push(role.name);
@@ -102,21 +115,18 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
     try {
       const topTypes = calculateTypeWeights();  
       const allPokemons = [];
-      const batchSize = 10; // Define the size of each batch
+      const batchSize = 10; 
   
       for (let type of topTypes) {
         const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
         const data = await res.json();
   
-        // Create a list of Pokémon names for this type
         const pokemonNames = data.pokemon.map(p => p.pokemon.name);
   
-        // Process Pokémon details in batches
         for (let i = 0; i < pokemonNames.length; i += batchSize) {
           const batch = pokemonNames.slice(i, i + batchSize);
           const batchPromises = batch.map(fetchPokemonDetails);
   
-          // Fetch and process batch
           const batchResults = await Promise.all(batchPromises);
   
           for (let pokemonDetails of batchResults) {
@@ -137,7 +147,7 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
       }
     
       const top20Pokemons = allPokemons
-        .sort((a, b) => b.score - a.score)
+        .sort((a, b) => b.fulfilledRoles - a.fulfilledRoles)
         .slice(0, 20);
   
       setTypeWeightMons(top20Pokemons);
@@ -179,28 +189,31 @@ const Suggestor = ({ teamData, typeCounts, moveTypes, pokemon, url, setSelectedC
   return (
     <div>
       <h3>Pokémon Suggestor</h3>
-
       <div style={{ display: 'flex', marginTop: '20px' }}>
         <div style={{ flex: 1 }}>
-          <label>Randomizer</label>
+          <label style={{ marginBottom: '5px' }}>Randomizer</label>
           <button onClick={handleRandomClick} disabled={loading || pokemon.length === 0}>
             Generate 3 Random Pokémon
           </button>
         </div>
 
-        <div style={{ flex: 1 }}>
-          <label>Suggestor</label>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <label style={{ marginBottom: '5px' }}>Suggestor</label>
           <button 
             onClick={handleRecommendClick} 
-            disabled={Object.values(typeCounts).filter(type => type === '').length > 3 || loading}>
+            disabled={Object.values(typeCounts).filter(type => type === '').length > 3 || loading}
+          >
             Recommend Pokémon
           </button>
-          <input
-            type='checkbox'
-            checked={excludingLegendary}
-            onChange={toggleLegendary}
-          />
-          <p>Exclude Legendaries</p>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="checkbox"
+              checked={excludingLegendary}
+              onChange={toggleLegendary}
+              style={{ marginRight: '5px' }}
+            />
+            <p style={{ margin: 0 }}>Exclude Legendaries</p>
+          </div>
         </div>
       </div>
 
