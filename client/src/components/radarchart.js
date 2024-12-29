@@ -12,12 +12,11 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-// TODO dynamic stats from team
 const RadarChart = ({teamStats}) => {
   useEffect(()=>{
     setStatAverage(getAverage(teamStats));
   },[teamStats])
-
+ 
   const [statAverage, setStatAverage] = useState([]);
 
   const getAverage = (stats) => {
@@ -56,7 +55,7 @@ const RadarChart = ({teamStats}) => {
       r: {
         angleLines: { display: true }, // Show/hide radial lines
         suggestedMin: 0, // Minimum value
-        suggestedMax: 100, // Maximum value
+        suggestedMax: 100, // default maximum value
       },
     },
     plugins: {
