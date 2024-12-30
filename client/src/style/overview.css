@@ -5,6 +5,7 @@
     overflow: hidden; 
     position: relative; 
     margin-top: 20px;
+    background-color: lightgray;
   }
   
   .pages {
@@ -47,7 +48,7 @@
     width: 50px; /* Fixed width for arrows */
     height: 100%; /* Full vertical height */
     background-color: rgba(0, 0, 0, 0); /* Semi-transparent background */
-    color: #c0c0c0; /* Initial color */
+    color: white; /* Initial color */
     border: none;
     cursor: pointer;
     display: flex;

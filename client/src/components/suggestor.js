@@ -206,11 +206,11 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
 
   return (
     <div>
-      <h3>Pokémon Suggestor</h3>
+      <h3 style={{marginTop:'-20px'}}>Pokémon Suggestor</h3>
       <div style={{ display: 'flex', marginTop: '20px' }}>
         <div style={{ flex: 1 }}>
-          <label style={{ marginBottom: '5px' }}>Randomizer</label>
-          <button onClick={handleRandomClick} disabled={loading || pokemon.length === 0}>
+          <label >Randomizer</label>
+          <button onClick={handleRandomClick} disabled={loading || pokemon.length === 0} style={{ marginTop: '5px' }}>
             Generate 3 Random Pokémon
           </button>
         </div>
@@ -236,7 +236,7 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
       </div>
 
       {loading ? (
-        <div className="loader-wrapper">
+        <div className="loader-wrapper" style={{padding:'40px'}}>
           <div className="loader" style={{ '--size': '100px' }}>
             <div className="top-half"></div>
             <div className="bottom-half"></div>
@@ -245,11 +245,7 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
           </div>
         </div>
       ) : (
-        <p>Suggestions will appear below...</p>
-      )}
-
-      {/* Layout for cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginTop:'20px' }}>
         {displayCards.map((card, index) => (
           <SuggestorCard 
             key={index} 
@@ -261,6 +257,7 @@ const Suggestor = ({ teamData, typeCounts, pokemon, url, setSelectedCardData, se
           />
         ))}
       </div>
+      )}
     </div>
   );
 };

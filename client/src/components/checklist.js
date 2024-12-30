@@ -56,11 +56,11 @@ const Checklist = ({ teamData, setCheckedState, checkedState }) => {
   }, [teamData, setCheckedState]);
   
   return (
-    <div style={{marginTop:'20px'}}>
+    <div style={{marginTop:'20px', marginBottom:'20px', backgroundColor:'lightgray'}}>
       <h4 className='checkboxLabel'>Teambuilding Checklist</h4>
       <div className="checklist-container">
         {labels.map((label, index) => (
-          <div key={index} className="checkbox-wrapper-45">
+          <div key={index} className="checkbox-wrapper-45" style={{marginBottom:'12.5px'}}>
             <input 
               id={`cbx-${index}`} 
               type="checkbox" 

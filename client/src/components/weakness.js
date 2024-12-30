@@ -4,7 +4,7 @@ const Weakness = ({ types, weaknessMap }) => {
 
   return (
     <div>
-      <h4 className="chartLabel">Weakness</h4>
+      <h4 className="chartLabel" style={{marginTop:'20px'}}>Weakness</h4>
       <div className="coverage-container">
         <div className="coverage-grid">
           {types.map((type) => (
