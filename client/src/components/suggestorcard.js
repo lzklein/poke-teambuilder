@@ -96,7 +96,7 @@ const SuggestorCard = ({ name, url, renderDisplay, setSelectedCardData, setCardD
           <h3 className="suggestorName">
             {cardData && cardData.name
               ? formatPokemonName(cardData.name)
-              : 'Unknown Pokémon'}
+              : '???'}
           </h3>
         </>
       )}
