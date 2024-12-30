@@ -4,7 +4,7 @@ import Header from './header';
 import Team from './team';
 import Checklist from './checklist';
 import Overview from './overview';
-import Footer from './footer';
+// import Footer from './footer';
 
 const Home = ({pokemon, url}) => {
   const [selectedCardData, setSelectedCardData] = useState(null);
@@ -56,7 +56,7 @@ const Home = ({pokemon, url}) => {
           selectedCardData={selectedCardData}
           cardDataButtonPressed={cardDataButtonPressed}
         />
-        <div className="right-column">
+        <div className="right-column" style={{backgroundColor:'slategray'}}> 
           <Checklist teamData={teamData} setCheckedState={setCheckedState} checkedState={checkedState}/>
           <Overview teamStats={teamStats} 
             teamData={teamData} 
@@ -70,7 +70,7 @@ const Home = ({pokemon, url}) => {
           />
         </div>
       </div>
-      <Footer />  
+      {/* <Footer />   */}
     </div>
   );
 }
