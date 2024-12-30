@@ -61,12 +61,13 @@
   
   .buttonGridView {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     grid-gap: 5px;
     text-align: center;
     margin-top: 10px;
     width: 100%;
-    height: calc(100% - 50px);
+    height: calc(100% - 20px);
   }
   
   .buttonGrid {
@@ -79,7 +80,7 @@
   }
   
   .backButton {
-    grid-column: span 3;
+    grid-column: span 2; /* Ensure X button spans the two columns */
     padding: 5px;
     font-size: 1.2em;
     background-color: #f00;
@@ -87,7 +88,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
+  }  
   
   .buttonGrid:hover {
     background-color: #ddd;
