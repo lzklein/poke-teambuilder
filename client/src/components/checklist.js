@@ -35,7 +35,7 @@ const Checklist = ({ teamData, setCheckedState, checkedState }) => {
       'fiery-dance', 'charge-beam', 'geomancy', 'meteor-beam', 'nasty-plot', 'quiver-dance', 'acid-armor', 'barrier', 'cosmic-power',
       'defend-order', 'diamond-storm', 'defense-curl', 'harden', 'magnetic-flux', 'stockpile', 'agility', 'amnesia', 'withdraw',
       'stuff-cheeks', 'skull-bash', 'iron-defense', 'flower-shield', 'charge', 'aura-wheel', 'autotomize', 'flame-charge',
-      'tailwind', 'rapid-spin', 'rock-polish', 'scale-shot'
+      'tailwind', 'rapid-spin', 'rock-polish', 'scale-shot', 'tidy-up'
     ]
     
   
