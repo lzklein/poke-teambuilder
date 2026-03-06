@@ -154,6 +154,16 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
       .join(' ');
   };
 
+  const formatAbilityName = (abilityName) => {
+    if (abilityName === "well-baked-body") return "Well-Baked Body";
+    if (abilityName === "soul-heart") return "Soul-Heart";
+
+    return abilityName
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
   const isMoveDisabled = (moveName) => {
     return selectedMoves.includes(moveName);
   };
@@ -332,7 +342,7 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
                     Abilities
                   </option>
                   {pokeData.abilities.map((abilityObj) => {
-                    const abilityName = abilityObj.ability.name;
+                    const abilityName = formatAbilityName(abilityObj.ability.name);
                     return (
                       <option key={abilityName} value={abilityName}>
                         {abilityName}
