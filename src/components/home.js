@@ -4,7 +4,6 @@ import Header from './header';
 import Team from './team';
 import Checklist from './checklist';
 import Overview from './overview';
-// import Footer from './footer';
 
 const Home = ({pokemon, url}) => {
   const [selectedCardData, setSelectedCardData] = useState(null);
@@ -70,7 +69,6 @@ const Home = ({pokemon, url}) => {
           />
         </div>
       </div>
-      {/* <Footer />   */}
     </div>
   );
 }
