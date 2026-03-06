@@ -43,7 +43,7 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
     };
   
     const newCoverageCounts = types.reduce((acc, type) => {
-      acc[type] = 0; // Reset count
+      acc[type] = 0;
       return acc;
     }, {});
   
@@ -97,18 +97,15 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
     }
     let weaknessMap = {};
   
-    // Initialize weaknessMap with all types having 0
     types.forEach((type) => {
       weaknessMap[type] = 0;
     });
   
-    // Loop through each Pokémon in typeCounts (now as an array)
     typesArray.forEach((pokeTypes) => {  
       if (pokeTypes) {
         const pokeTypeArray = pokeTypes.split(' '); // Split by space for dual types
-        const tempWeaknessMap = {}; // Temporarily store weaknesses to avoid overcounting
-  
-        // Loop through each type to calculate the weaknesses for dual-types
+        const tempWeaknessMap = {};
+
         pokeTypeArray.forEach((pokeType) => {
           const weaknesses = typeWeakness[pokeType];
   
@@ -116,7 +113,6 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
             Object.keys(weaknesses).forEach((weakType) => {
               const effectiveness = weaknesses[weakType];
   
-              // Track the weaknesses, resistances, and immunities
               let effect = 0;
               if (effectiveness === 2) {
                 effect = 1;  // Weakness
@@ -128,21 +124,18 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
                 effect = 0;  // Neutral
               }
   
-              // Only update the map if the type isn't already counted for the current Pokémon
               if (!tempWeaknessMap[weakType]) {
                 tempWeaknessMap[weakType] = effect;
               } else {
-                tempWeaknessMap[weakType] += effect; // Accumulate the effect for dual-types
+                tempWeaknessMap[weakType] += effect;
               }
             });
           }
         });
   
-        // Now update the main weakness map based on the temporary one
         Object.keys(tempWeaknessMap).forEach((weakType) => {
           const finalEffect = tempWeaknessMap[weakType];
   
-          // Apply the rules to update the weakness map
           if (finalEffect >= 2) {
             weaknessMap[weakType] += 2;
           } else if (finalEffect === 1) {
@@ -151,7 +144,7 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
         });
       }
     });
-    return weaknessMap;  // Just return the map, no state setting here
+    return weaknessMap;
   };
   
   useEffect(() => {
@@ -168,13 +161,13 @@ const Overview = ({ teamStats, teamData, typeCounts, moveTypes, pokemon, url, se
   
   const handleNextPage = () => {
     if (currentPage < 2) {
-      setCurrentPage(currentPage + 1); // Navigate to the next page
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage(currentPage - 1); // Navigate back to the previous page
+      setCurrentPage(currentPage - 1);
     }
   };
 

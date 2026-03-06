@@ -100,7 +100,6 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
   const handleMoveChange = async (index, newMove) => {
     const previousMove = selectedMoves[index];
     if (previousMove) {
-      // Remove the previous move's type from moveTypes
       updateMoveTypes(previousMove, "remove");
     }
   
@@ -123,7 +122,6 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
         updatedTypes[index] = moveType;
         setSelectedMoveTypes(updatedTypes);
   
-        // Add the new move's type to moveTypes (only if it's not already present)
         updateMoveTypes(newMove, "add");
       }
     } catch (error) {
@@ -172,18 +170,15 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
       const moveType = data.type.name;
       const moveCategory = data.damage_class.name;
   
-      // Ignore status moves as we only care about attacking moves' types
       if (moveCategory === "status") {
         return;
       }
   
-      // Prevent adding duplicate move types
       setMoveTypes((prevMoveTypes) => {
         const updatedTypes = { ...prevMoveTypes };
   
-        // Check if the type is already in selectedMoveTypes
         if (selectedMoveTypes.includes(moveType)) {
-          return prevMoveTypes; // Return the previous state without updating
+          return prevMoveTypes;
         }
   
         if (action === "add") {

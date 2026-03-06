@@ -54,8 +54,8 @@ const RadarChart = ({teamStats}) => {
     scales: {
       r: {
         angleLines: { display: true }, // Show/hide radial lines
-        suggestedMin: 0, // Minimum value
-        suggestedMax: 100, // default maximum value
+        suggestedMin: 0,
+        suggestedMax: 100,
       },
     },
     plugins: {
