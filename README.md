@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+# PokeTeamBuilder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based team builder for Pokémon that integrates with the **PokeAPI** to help construct and analyze competitive teams.
 
-## Available Scripts
+The application allows users to build a full 6-Pokémon team, select abilities and moves, and receive automatic feedback about team structure, weaknesses, and strategic coverage.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+![Demo](demo1.gif)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Team Builder
+- Create a team of **up to 6 Pokémon**
+- Select Pokémon from a dropdown using **live data from PokeAPI**
+- Choose **abilities and moves**
+- Toggle between **regular and shiny sprites**
+- Dynamic **type-colored Pokémon cards**
 
-### `npm test`
+### Team Utility Checklist
+Automatically detects strategic tools within the team based on selected moves:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Entry hazards
+- Hazard removal
+- Pivot moves
+- Phazing
+- Cleric support
+- Status spreading
+- Trapping
+- Recovery
+- Priority moves
+- Setup moves
 
-### `npm run build`
+When one of these utilities is selected, the corresponding checkbox is marked.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Team Analysis
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Type Weakness & Coverage
+- **type weaknesses** across the team
+- **offensive coverage** based on selected moves
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Stat Radar Chart
+- Displays the **average team stats** using a radar chart:
 
-### `npm run eject`
+#### Team Suggestions
+Includes a suggestion panel with three candidate Pokémon:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Random** — generates three random Pokémon
+- **Suggestor** — recommends three Pokémon weighted based on current type weaknesses
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Clicking a suggestion card allows assigning that Pokémon to a specific team slot.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Tech Stack
 
-## Learn More
+- **React**
+- **JavaScript**
+- **CSS**
+- **PokeAPI** (https://pokeapi.co/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Running the Project
 
-### Code Splitting
+Clone the repository:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+git clone git@github.com:lzklein/poke-teambuilder.git
+cd poke-teambuilder
+```
 
-### Analyzing the Bundle Size
+Install dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm install
+```
 
-### Making a Progressive Web App
+Start the development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm start
+```
 
-### Advanced Configuration
+The app will run locally at:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+http://localhost:3000
+```
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Data Source
 
-### `npm run build` fails to minify
+Pokémon data is fetched from the **PokeAPI**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+https://pokeapi.co/
+
+This includes:
+- Pokémon sprites
+- Typing
+- Base stats
+- Abilities
+- Move data
+
+---
+
+## Notes
+
+- All calculations (team weaknesses, coverage, suggestions) are performed **client-side**.
+- The UI dynamically adapts to Pokémon types with color-coded cards.
+- Designed as a **frontend-only application** using live API data.
+
+---
+
+## Future Improvements
+
+Possible enhancements include:
+
+- Team export / import
+- Damage calculator integration
+- Competitive role tagging
+
+---
+
+## Demo
+
+![Demo](demo2.gif)
