@@ -10,10 +10,12 @@ const Pokecard = ({ pokemon, url, setTeamData, ind, setTeamStats, setTypeCounts,
   const [selectedAbility, setSelectedAbility] = useState('');
   const [pokemonType, setPokemonType] = useState('');
 
-  // ! this sets name to "bulbasaur" (1st value), unsure why or how to fix, but harmless (?)
+  // ! pokemon forms and regionals show as "bulbasaur" something to do with " " and "-" in the name
   useEffect(()=>{
     if(cardDataButtonPressed && ind===selectedCardData.index){
-      setSelectedMon(selectedCardData.name);
+      if(!!selectedCardData){
+        setSelectedMon(selectedCardData.name.replace(/\b\w/g, char => char.toUpperCase()));
+      }
     }
   },[selectedCardData, ind, cardDataButtonPressed])
 
